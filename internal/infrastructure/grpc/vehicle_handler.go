@@ -7,9 +7,9 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/yourorg/api-encomos/customer-service/internal/domain/model"
-	"github.com/yourorg/api-encomos/customer-service/internal/domain/service"
-	customerpb "github.com/yourorg/api-encomos/customer-service/proto/customer"
+	"github.com/encomos/api-encomos/customer-service/internal/domain/model"
+	"github.com/encomos/api-encomos/customer-service/internal/domain/service"
+	customerpb "github.com/encomos/api-encomos/customer-service/proto/customer"
 )
 
 // VehicleHandler handles vehicle-related gRPC requests

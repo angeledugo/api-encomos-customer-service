@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yourorg/api-encomos/customer-service/internal/domain/model"
-	"github.com/yourorg/api-encomos/customer-service/internal/port/repository"
+	"github.com/encomos/api-encomos/customer-service/internal/domain/model"
+	"github.com/encomos/api-encomos/customer-service/internal/port/repository"
 )
 
 type customerNoteRepository struct {
@@ -534,10 +534,10 @@ func (r *customerNoteRepository) GetMostActiveStaff(ctx context.Context, limit i
 		}
 
 		result = append(result, map[string]interface{}{
-			"staff_id":           staffID,
-			"staff_name":         staffName,
-			"note_count":         noteCount,
-			"last_note_created":  lastNoteCreated,
+			"staff_id":          staffID,
+			"staff_name":        staffName,
+			"note_count":        noteCount,
+			"last_note_created": lastNoteCreated,
 		})
 	}
 

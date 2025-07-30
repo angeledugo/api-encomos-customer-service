@@ -35,9 +35,9 @@ echo "📂 Proto directory: $PROTO_DIR"
 echo "🔄 Generating customer.proto..."
 
 protoc \
-    --go_out=$ROOT_DIR \
+    --go_out=$PROTO_DIR \
     --go_opt=paths=source_relative \
-    --go-grpc_out=$ROOT_DIR \
+    --go-grpc_out=$PROTO_DIR \
     --go-grpc_opt=paths=source_relative \
     --proto_path=$PROTO_DIR \
     customer/customer.proto

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/yourorg/api-encomos/customer-service/internal/domain/model"
-	"github.com/yourorg/api-encomos/customer-service/internal/port/repository"
+	"github.com/encomos/api-encomos/customer-service/internal/domain/model"
+	"github.com/encomos/api-encomos/customer-service/internal/port/repository"
 )
 
 // CustomerService provides business logic for customer operations
@@ -89,7 +89,7 @@ func (s *CustomerService) GetCustomer(ctx context.Context, id int64, includeVehi
 		if err != nil {
 			return nil, fmt.Errorf("failed to load customer notes: %w", err)
 		}
-		customer.Notes = notes
+		customer.CustomerNotes = notes
 	}
 
 	return customer, nil

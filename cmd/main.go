@@ -11,10 +11,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/yourorg/api-encomos/customer-service/internal/config"
-	"github.com/yourorg/api-encomos/customer-service/internal/domain/service"
-	"github.com/yourorg/api-encomos/customer-service/internal/infrastructure/grpc"
-	"github.com/yourorg/api-encomos/customer-service/internal/infrastructure/persistence/postgres"
+	"github.com/encomos/api-encomos/customer-service/internal/config"
+	"github.com/encomos/api-encomos/customer-service/internal/domain/service"
+	"github.com/encomos/api-encomos/customer-service/internal/infrastructure/grpc"
+	"github.com/encomos/api-encomos/customer-service/internal/infrastructure/persistence/postgres"
 )
 
 func main() {

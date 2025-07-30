@@ -6,9 +6,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/encomos/api-encomos/customer-service/internal/config"
 	_ "github.com/lib/pq"
-	"github.com/yourorg/api-encomos/customer-service/internal/config"
-	sharedDB "github.com/yourorg/api-encomos/shared-lib/database"
 )
 
 // DB wraps the database connection
@@ -18,22 +17,20 @@ type DB struct {
 
 // NewDB creates a new database connection
 func NewDB(cfg *config.DatabaseConfig) (*DB, error) {
-	dbConfig := &sharedDB.Config{
-		Host:         cfg.Host,
-		Port:         cfg.Port,
-		User:         cfg.User,
-		Password:     cfg.Password,
-		Name:         cfg.Name,
-		SSLMode:      cfg.SSLMode,
-		MaxOpenConns: cfg.MaxOpenConns,
-		MaxIdleConns: cfg.MaxIdleConns,
-		MaxLifetime:  cfg.MaxLifetime,
+	// Build connection string
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
+		cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.Name, cfg.SSLMode)
+
+	// Open database connection
+	db, err := sql.Open("postgres", dsn)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open database connection: %w", err)
 	}
 
-	db, err := sharedDB.NewConnection(dbConfig)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create database connection: %w", err)
-	}
+	// Configure connection pool
+	db.SetMaxOpenConns(cfg.MaxOpenConns)
+	db.SetMaxIdleConns(cfg.MaxIdleConns)
+	db.SetConnMaxLifetime(cfg.MaxLifetime)
 
 	// Test the connection
 	if err := db.Ping(); err != nil {
@@ -54,6 +51,24 @@ func (db *DB) Healthcheck(ctx context.Context) error {
 	defer cancel()
 
 	return db.PingContext(ctx)
+}
+
+// Context keys for tenant information
+type contextKey string
+
+const (
+	TenantIDKey contextKey = "tenant_id"
+)
+
+// WithTenantID adds tenant ID to context
+func WithTenantID(ctx context.Context, tenantID int64) context.Context {
+	return context.WithValue(ctx, TenantIDKey, tenantID)
+}
+
+// GetTenantID extracts tenant ID from context
+func GetTenantID(ctx context.Context) (int64, bool) {
+	tenantID, ok := ctx.Value(TenantIDKey).(int64)
+	return tenantID, ok
 }
 
 // SetTenantID sets the tenant ID in the database session for RLS
@@ -108,7 +123,7 @@ func (db *DB) QueryRowWithTenant(ctx context.Context, tenantID int64, query stri
 
 // GetTenantIDFromContext extracts tenant ID from context
 func GetTenantIDFromContext(ctx context.Context) (int64, error) {
-	tenantID, ok := ctx.Value("tenant_id").(int64)
+	tenantID, ok := GetTenantID(ctx)
 	if !ok {
 		return 0, fmt.Errorf("tenant ID not found in context")
 	}
@@ -117,7 +132,7 @@ func GetTenantIDFromContext(ctx context.Context) (int64, error) {
 
 // WithTenantContext creates a context with tenant ID
 func WithTenantContext(ctx context.Context, tenantID int64) context.Context {
-	return context.WithValue(ctx, "tenant_id", tenantID)
+	return WithTenantID(ctx, tenantID)
 }
 
 // Transaction helper function that sets tenant ID and runs a function in a transaction
@@ -143,36 +158,36 @@ func ScanRowsToMap(rows *sql.Rows) ([]map[string]interface{}, error) {
 	}
 
 	var results []map[string]interface{}
-	
+
 	for rows.Next() {
 		values := make([]interface{}, len(columns))
 		valuePtrs := make([]interface{}, len(columns))
-		
+
 		for i := range values {
 			valuePtrs[i] = &values[i]
 		}
-		
+
 		if err := rows.Scan(valuePtrs...); err != nil {
 			return nil, err
 		}
-		
+
 		rowMap := make(map[string]interface{})
 		for i, col := range columns {
 			var v interface{}
 			val := values[i]
-			
+
 			if b, ok := val.([]byte); ok {
 				v = string(b)
 			} else {
 				v = val
 			}
-			
+
 			rowMap[col] = v
 		}
-		
+
 		results = append(results, rowMap)
 	}
-	
+
 	return results, nil
 }
 

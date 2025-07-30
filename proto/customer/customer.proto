@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package customer.v1;
-option go_package = "github.com/yourorg/api-encomos/customer-service/proto/customer;customerpb";
+option go_package = "github.com/encomos/api-encomos/customer-service/proto/customer;customerpb";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";

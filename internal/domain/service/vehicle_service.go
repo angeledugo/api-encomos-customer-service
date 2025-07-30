@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/yourorg/api-encomos/customer-service/internal/domain/model"
-	"github.com/yourorg/api-encomos/customer-service/internal/port/repository"
+	"github.com/encomos/api-encomos/customer-service/internal/domain/model"
+	"github.com/encomos/api-encomos/customer-service/internal/port/repository"
 )
 
 // VehicleService provides business logic for vehicle operations
@@ -244,11 +244,11 @@ func (s *VehicleService) GetVehicleCompatibilityInfo(ctx context.Context, id int
 	}
 
 	info := map[string]interface{}{
-		"vehicle":             vehicle,
+		"vehicle":              vehicle,
 		"compatibility_string": vehicle.GetCompatibilityString(),
 		"compatible_vehicles":  len(compatibleVehicles),
-		"exact_matches":       len(exactMatches),
-		"year_range":          fmt.Sprintf("%d-%d", vehicle.Year-3, vehicle.Year+3),
+		"exact_matches":        len(exactMatches),
+		"year_range":           fmt.Sprintf("%d-%d", vehicle.Year-3, vehicle.Year+3),
 	}
 
 	return info, nil
@@ -297,7 +297,7 @@ func (s *VehicleService) CreateVehiclesForCustomer(ctx context.Context, customer
 	var vehicles []*model.Vehicle
 	for _, create := range vehicleCreates {
 		create.CustomerID = customerID // Asegurar que el customer ID esté configurado
-		
+
 		vehicle := model.NewVehicle(create)
 		if err := vehicle.Validate(); err != nil {
 			return nil, fmt.Errorf("validation error for vehicle %s %s: %w", vehicle.Make, vehicle.Model, err)

@@ -11,11 +11,11 @@ import (
 	"google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
 
-	"github.com/yourorg/api-encomos/customer-service/internal/config"
-	"github.com/yourorg/api-encomos/customer-service/internal/domain/service"
-	customerpb "github.com/yourorg/api-encomos/customer-service/proto/customer"
-	sharedMiddleware "github.com/yourorg/api-encomos/shared-lib/middleware"
-	sharedLogger "github.com/yourorg/api-encomos/shared-lib/logger"
+	"github.com/encomos/api-encomos/customer-service/internal/config"
+	"github.com/encomos/api-encomos/customer-service/internal/domain/service"
+	"github.com/encomos/api-encomos/customer-service/internal/infrastructure/logger"
+	"github.com/encomos/api-encomos/customer-service/internal/infrastructure/middleware"
+	customerpb "github.com/encomos/api-encomos/customer-service/proto/customer"
 )
 
 // Server represents the gRPC server
@@ -23,13 +23,13 @@ type Server struct {
 	server   *grpc.Server
 	listener net.Listener
 	config   *config.GRPCConfig
-	logger   *sharedLogger.Logger
+	logger   *logger.Logger
 }
 
 // NewServer creates a new gRPC server
 func NewServer(cfg *config.GRPCConfig) (*Server, error) {
 	// Create logger
-	logger := sharedLogger.New("customer-service")
+	logger := logger.NewWithService("customer-service")
 
 	// Create listener
 	address := fmt.Sprintf(":%d", cfg.Port)
@@ -41,20 +41,20 @@ func NewServer(cfg *config.GRPCConfig) (*Server, error) {
 	// Create gRPC server with middleware
 	serverOptions := []grpc.ServerOption{
 		grpc.ChainUnaryInterceptor(
-			sharedMiddleware.LoggingInterceptor(logger),
-			sharedMiddleware.RecoveryInterceptor(logger),
+			middleware.LoggingInterceptor(logger),
+			middleware.RecoveryInterceptor(logger),
 			// TODO: Add authentication interceptor when auth service is ready
 		),
 		grpc.ChainStreamInterceptor(
-			sharedMiddleware.StreamLoggingInterceptor(logger),
-			sharedMiddleware.StreamRecoveryInterceptor(logger),
+			middleware.StreamLoggingInterceptor(logger),
+			middleware.StreamRecoveryInterceptor(logger),
 		),
 	}
 
 	// Add TLS if configured
 	if !cfg.Insecure {
 		// TODO: Add TLS configuration when needed
-		logger.Warn("TLS is configured but not implemented yet")
+		logger.WithFields(map[string]interface{}{"tls": "not_implemented"}).Warn("TLS is configured but not implemented yet")
 	}
 
 	server := grpc.NewServer(serverOptions...)
@@ -74,7 +74,6 @@ func (s *Server) RegisterServices(
 ) {
 	// Create handlers
 	customerHandler := NewCustomerHandler(customerService, vehicleService)
-	vehicleHandler := NewVehicleHandler(vehicleService)
 
 	// Register services
 	customerpb.RegisterCustomerServiceServer(s.server, customerHandler)
@@ -87,15 +86,15 @@ func (s *Server) RegisterServices(
 	// Enable reflection for development
 	if s.config.Insecure {
 		reflection.Register(s.server)
-		s.logger.Info("gRPC reflection enabled (development mode)")
+		s.logger.WithFields(map[string]interface{}{"reflection": "enabled"}).Info("gRPC reflection enabled (development mode)")
 	}
 
-	s.logger.Info("All gRPC services registered successfully")
+	s.logger.WithFields(map[string]interface{}{"status": "registered"}).Info("All gRPC services registered successfully")
 }
 
 // Start starts the gRPC server
 func (s *Server) Start() error {
-	s.logger.WithField("address", s.listener.Addr().String()).Info("Starting gRPC server")
+	s.logger.WithFields(map[string]interface{}{"address": s.listener.Addr().String()}).Info("Starting gRPC server")
 
 	go func() {
 		if err := s.server.Serve(s.listener); err != nil {
@@ -103,13 +102,13 @@ func (s *Server) Start() error {
 		}
 	}()
 
-	s.logger.WithField("port", s.config.Port).Info("gRPC server started successfully")
+	s.logger.WithFields(map[string]interface{}{"port": s.config.Port}).Info("gRPC server started successfully")
 	return nil
 }
 
 // Stop stops the gRPC server gracefully
 func (s *Server) Stop(ctx context.Context) error {
-	s.logger.Info("Stopping gRPC server...")
+	s.logger.WithFields(map[string]interface{}{"action": "stopping"}).Info("Stopping gRPC server...")
 
 	// Channel to signal when graceful stop is complete
 	stopped := make(chan struct{})
@@ -122,10 +121,10 @@ func (s *Server) Stop(ctx context.Context) error {
 	// Wait for graceful stop or context timeout
 	select {
 	case <-stopped:
-		s.logger.Info("gRPC server stopped gracefully")
+		s.logger.WithFields(map[string]interface{}{"status": "graceful"}).Info("gRPC server stopped gracefully")
 		return nil
 	case <-ctx.Done():
-		s.logger.Warn("gRPC server stop timeout, forcing shutdown")
+		s.logger.WithFields(map[string]interface{}{"timeout": true}).Warn("gRPC server stop timeout, forcing shutdown")
 		s.server.Stop()
 		return ctx.Err()
 	}
@@ -190,7 +189,7 @@ func (s *Server) GetListener() net.Listener {
 // AddHealthCheck adds a health check for a specific service
 func (s *Server) AddHealthCheck(serviceName string, check func() error) {
 	// TODO: Implement custom health checks if needed
-	s.logger.WithField("service", serviceName).Info("Health check added")
+	s.logger.WithFields(map[string]interface{}{"service": serviceName}).Info("Health check added")
 }
 
 // SetServingStatus sets the serving status for health checks

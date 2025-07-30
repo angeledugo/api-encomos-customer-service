@@ -3,18 +3,15 @@ package grpc
 import (
 	"context"
 	"database/sql"
-	"fmt"
-	"strconv"
-	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/yourorg/api-encomos/customer-service/internal/domain/model"
-	"github.com/yourorg/api-encomos/customer-service/internal/domain/service"
-	customerpb "github.com/yourorg/api-encomos/customer-service/proto/customer"
+	"github.com/encomos/api-encomos/customer-service/internal/domain/model"
+	"github.com/encomos/api-encomos/customer-service/internal/domain/service"
+	customerpb "github.com/encomos/api-encomos/customer-service/proto/customer"
 )
 
 // CustomerHandler handles customer-related gRPC requests
@@ -310,7 +307,7 @@ func (h *CustomerHandler) AddCustomerNote(ctx context.Context, req *customerpb.A
 	// Por ahora, usar valores dummy para staff info - esto se obtendrá del token JWT en producción
 	create := model.CustomerNoteCreate{
 		CustomerID: req.CustomerId,
-		StaffID:    1, // TODO: Obtener del contexto de autenticación
+		StaffID:    1,             // TODO: Obtener del contexto de autenticación
 		StaffName:  "System User", // TODO: Obtener del contexto de autenticación
 		Note:       req.Note,
 		Type:       req.Type,
@@ -398,9 +395,9 @@ func (h *CustomerHandler) customerToProto(customer *model.Customer) *customerpb.
 	}
 
 	// Convert notes if present
-	if customer.Notes != nil {
-		pb.CustomerNotes = make([]*customerpb.CustomerNote, len(customer.Notes))
-		for i, note := range customer.Notes {
+	if customer.CustomerNotes != nil {
+		pb.CustomerNotes = make([]*customerpb.CustomerNote, len(customer.CustomerNotes))
+		for i, note := range customer.CustomerNotes {
 			pb.CustomerNotes[i] = h.customerNoteToProto(note)
 		}
 	}
@@ -471,10 +468,9 @@ func stringPtrFromProto(s string) *string {
 }
 
 func isNotFoundError(err error) bool {
-	return err == sql.ErrNoRows || 
-		   (err != nil && (
-			   containsString(err.Error(), "not found") ||
-			   containsString(err.Error(), "does not exist")))
+	return err == sql.ErrNoRows ||
+		(err != nil && (containsString(err.Error(), "not found") ||
+			containsString(err.Error(), "does not exist")))
 }
 
 func isValidationError(err error) bool {
@@ -486,19 +482,18 @@ func isValidationError(err error) bool {
 }
 
 func isDuplicateError(err error) bool {
-	return err != nil && (
-		containsString(err.Error(), "already exists") ||
+	return err != nil && (containsString(err.Error(), "already exists") ||
 		containsString(err.Error(), "duplicate") ||
 		containsString(err.Error(), "unique constraint"))
 }
 
 func containsString(s, substr string) bool {
-	return len(s) >= len(substr) && 
-		   (s == substr || 
-			(len(s) > len(substr) && 
-			 (s[:len(substr)] == substr || 
-			  s[len(s)-len(substr):] == substr || 
-			  findSubstring(s, substr))))
+	return len(s) >= len(substr) &&
+		(s == substr ||
+			(len(s) > len(substr) &&
+				(s[:len(substr)] == substr ||
+					s[len(s)-len(substr):] == substr ||
+					findSubstring(s, substr))))
 }
 
 func findSubstring(s, substr string) bool {

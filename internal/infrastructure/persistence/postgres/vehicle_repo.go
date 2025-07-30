@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/yourorg/api-encomos/customer-service/internal/domain/model"
-	"github.com/yourorg/api-encomos/customer-service/internal/port/repository"
+	"github.com/encomos/api-encomos/customer-service/internal/domain/model"
+	"github.com/encomos/api-encomos/customer-service/internal/port/repository"
 )
 
 type vehicleRepository struct {
@@ -419,7 +419,7 @@ func (r *vehicleRepository) GetByLicensePlate(ctx context.Context, licensePlate 
 }
 
 // SearchByMakeModel searches vehicles by make and model
-func (r *vehicleRepository) SearchByMakeModel(ctx context.Context, make, model string, year *int) ([]*model.Vehicle, error) {
+func (r *vehicleRepository) SearchByMakeModel(ctx context.Context, make, vehicleModel string, year *int) ([]*model.Vehicle, error) {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return nil, err
@@ -435,10 +435,10 @@ func (r *vehicleRepository) SearchByMakeModel(ctx context.Context, make, model s
 		args = append(args, "%"+make+"%")
 	}
 
-	if model != "" {
+	if vehicleModel != "" {
 		argCount++
 		whereConditions = append(whereConditions, fmt.Sprintf("v.model ILIKE $%d", argCount))
-		args = append(args, "%"+model+"%")
+		args = append(args, "%"+vehicleModel+"%")
 	}
 
 	if year != nil {
@@ -507,7 +507,7 @@ func (r *vehicleRepository) SearchByMakeModel(ctx context.Context, make, model s
 }
 
 // FindCompatibleVehicles finds vehicles compatible within a year range
-func (r *vehicleRepository) FindCompatibleVehicles(ctx context.Context, make, model string, yearFrom, yearTo int) ([]*model.Vehicle, error) {
+func (r *vehicleRepository) FindCompatibleVehicles(ctx context.Context, make, vehicleModel string, yearFrom, yearTo int) ([]*model.Vehicle, error) {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return nil, err
@@ -525,7 +525,7 @@ func (r *vehicleRepository) FindCompatibleVehicles(ctx context.Context, make, mo
 		ORDER BY v.year DESC
 		LIMIT 100`
 
-	rows, err := r.db.QueryWithTenant(ctx, tenantID, query, "%"+make+"%", "%"+model+"%", yearFrom, yearTo)
+	rows, err := r.db.QueryWithTenant(ctx, tenantID, query, "%"+make+"%", "%"+vehicleModel+"%", yearFrom, yearTo)
 	if err != nil {
 		return nil, fmt.Errorf("failed to find compatible vehicles: %w", err)
 	}
@@ -570,7 +570,7 @@ func (r *vehicleRepository) FindCompatibleVehicles(ctx context.Context, make, mo
 }
 
 // ListByMakeModelYear lists vehicles by exact make, model and year
-func (r *vehicleRepository) ListByMakeModelYear(ctx context.Context, make, model string, year int) ([]*model.Vehicle, error) {
+func (r *vehicleRepository) ListByMakeModelYear(ctx context.Context, make, vehicleModel string, year int) ([]*model.Vehicle, error) {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return nil, err
@@ -585,7 +585,7 @@ func (r *vehicleRepository) ListByMakeModelYear(ctx context.Context, make, model
 		WHERE v.make = $1 AND v.model = $2 AND v.year = $3
 		ORDER BY v.created_at DESC`
 
-	rows, err := r.db.QueryWithTenant(ctx, tenantID, query, make, model, year)
+	rows, err := r.db.QueryWithTenant(ctx, tenantID, query, make, vehicleModel, year)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list vehicles by make/model/year: %w", err)
 	}

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/yourorg/api-encomos/customer-service/internal/domain/model"
-	"github.com/yourorg/api-encomos/customer-service/internal/port/repository"
+	"github.com/encomos/api-encomos/customer-service/internal/domain/model"
+	"github.com/encomos/api-encomos/customer-service/internal/port/repository"
 )
 
 type customerRepository struct {
@@ -348,7 +348,7 @@ func (r *customerRepository) Search(ctx context.Context, filter model.CustomerSe
 	for _, field := range searchFields {
 		switch field {
 		case "name":
-			searchConditions = append(searchConditions, 
+			searchConditions = append(searchConditions,
 				"(first_name ILIKE $1 OR last_name ILIKE $1 OR (first_name || ' ' || last_name) ILIKE $1)")
 		case "email":
 			searchConditions = append(searchConditions, "email ILIKE $1")
@@ -577,7 +577,7 @@ func (r *customerRepository) ListInactive(ctx context.Context, page, limit int) 
 
 	// Count total inactive customers
 	var total int
-	err = r.db.QueryRowWithTenant(ctx, tenantID, 
+	err = r.db.QueryRowWithTenant(ctx, tenantID,
 		"SELECT COUNT(*) FROM customers WHERE is_active = false").Scan(&total)
 	if err != nil {
 		return nil, 0, fmt.Errorf("failed to count inactive customers: %w", err)
@@ -654,7 +654,7 @@ func (r *customerRepository) Count(ctx context.Context) (int64, error) {
 	}
 
 	var count int64
-	err = r.db.QueryRowWithTenant(ctx, tenantID, 
+	err = r.db.QueryRowWithTenant(ctx, tenantID,
 		"SELECT COUNT(*) FROM customers").Scan(&count)
 	if err != nil {
 		return 0, fmt.Errorf("failed to count customers: %w", err)
@@ -671,7 +671,7 @@ func (r *customerRepository) CountByType(ctx context.Context, customerType strin
 	}
 
 	var count int64
-	err = r.db.QueryRowWithTenant(ctx, tenantID, 
+	err = r.db.QueryRowWithTenant(ctx, tenantID,
 		"SELECT COUNT(*) FROM customers WHERE customer_type = $1", customerType).Scan(&count)
 	if err != nil {
 		return 0, fmt.Errorf("failed to count customers by type: %w", err)
@@ -688,7 +688,7 @@ func (r *customerRepository) CountActive(ctx context.Context) (int64, error) {
 	}
 
 	var count int64
-	err = r.db.QueryRowWithTenant(ctx, tenantID, 
+	err = r.db.QueryRowWithTenant(ctx, tenantID,
 		"SELECT COUNT(*) FROM customers WHERE is_active = true").Scan(&count)
 	if err != nil {
 		return 0, fmt.Errorf("failed to count active customers: %w", err)

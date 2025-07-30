@@ -16,27 +16,27 @@ const (
 
 // Customer representa un cliente en el sistema
 type Customer struct {
-	ID           int64                  `db:"id" json:"id"`
-	TenantID     int64                  `db:"tenant_id" json:"tenant_id"`
-	FirstName    string                 `db:"first_name" json:"first_name" validate:"required,min=1,max=100"`
-	LastName     string                 `db:"last_name" json:"last_name" validate:"required,min=1,max=100"`
-	Email        *string                `db:"email" json:"email" validate:"omitempty,email,max=255"`
-	Phone        *string                `db:"phone" json:"phone" validate:"omitempty,max=20"`
-	CustomerType string                 `db:"customer_type" json:"customer_type" validate:"required,oneof=individual business"`
-	CompanyName  *string                `db:"company_name" json:"company_name" validate:"omitempty,max=255"`
-	TaxID        *string                `db:"tax_id" json:"tax_id" validate:"omitempty,max=50"`
-	Address      *string                `db:"address" json:"address" validate:"omitempty,max=500"`
-	Birthday     *time.Time             `db:"birthday" json:"birthday"`
-	Notes        *string                `db:"notes" json:"notes" validate:"omitempty,max=1000"`
-	Preferences  CustomerPreferences    `db:"preferences" json:"preferences"`
-	IsActive     bool                   `db:"is_active" json:"is_active"`
-	CreatedAt    time.Time              `db:"created_at" json:"created_at"`
-	UpdatedAt    time.Time              `db:"updated_at" json:"updated_at"`
+	ID           int64               `db:"id" json:"id"`
+	TenantID     int64               `db:"tenant_id" json:"tenant_id"`
+	FirstName    string              `db:"first_name" json:"first_name" validate:"required,min=1,max=100"`
+	LastName     string              `db:"last_name" json:"last_name" validate:"required,min=1,max=100"`
+	Email        *string             `db:"email" json:"email" validate:"omitempty,email,max=255"`
+	Phone        *string             `db:"phone" json:"phone" validate:"omitempty,max=20"`
+	CustomerType string              `db:"customer_type" json:"customer_type" validate:"required,oneof=individual business"`
+	CompanyName  *string             `db:"company_name" json:"company_name" validate:"omitempty,max=255"`
+	TaxID        *string             `db:"tax_id" json:"tax_id" validate:"omitempty,max=50"`
+	Address      *string             `db:"address" json:"address" validate:"omitempty,max=500"`
+	Birthday     *time.Time          `db:"birthday" json:"birthday"`
+	Notes        *string             `db:"notes" json:"notes" validate:"omitempty,max=1000"`
+	Preferences  CustomerPreferences `db:"preferences" json:"preferences"`
+	IsActive     bool                `db:"is_active" json:"is_active"`
+	CreatedAt    time.Time           `db:"created_at" json:"created_at"`
+	UpdatedAt    time.Time           `db:"updated_at" json:"updated_at"`
 
 	// Campos no persistidos (relaciones)
-	Vehicles []Vehicle      `db:"-" json:"vehicles,omitempty"`
-	Notes    []CustomerNote `db:"-" json:"customer_notes,omitempty"`
-	Stats    *CustomerStats `db:"-" json:"stats,omitempty"`
+	Vehicles      []*Vehicle      `db:"-" json:"vehicles,omitempty"`
+	CustomerNotes []*CustomerNote `db:"-" json:"customer_notes,omitempty"`
+	Stats         *CustomerStats  `db:"-" json:"stats,omitempty"`
 }
 
 // CustomerPreferences representa las preferencias del cliente en formato JSON
@@ -119,7 +119,7 @@ type CustomerSearchFilter struct {
 // NewCustomer crea un nuevo cliente desde CustomerCreate
 func NewCustomer(create CustomerCreate) *Customer {
 	now := time.Now()
-	
+
 	customer := &Customer{
 		TenantID:     create.TenantID,
 		FirstName:    create.FirstName,
@@ -313,10 +313,10 @@ func (c *Customer) Validate() error {
 // isValidEmail realiza una validación básica de email
 func isValidEmail(email string) bool {
 	// Implementación simple, en producción usar una validación más robusta
-	return len(email) > 3 && 
-		   len(email) <= 255 && 
-		   containsChar(email, '@') && 
-		   containsChar(email, '.')
+	return len(email) > 3 &&
+		len(email) <= 255 &&
+		containsChar(email, '@') &&
+		containsChar(email, '.')
 }
 
 // containsChar verifica si un string contiene un carácter específico
