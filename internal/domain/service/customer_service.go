@@ -68,7 +68,7 @@ func (s *CustomerService) CreateCustomer(ctx context.Context, create model.Custo
 }
 
 // GetCustomer retrieves a customer by ID with optional related data
-func (s *CustomerService) GetCustomer(ctx context.Context, id int64, includeVehicles, includeNotes bool) (*model.Customer, error) {
+func (s *CustomerService) GetCustomer(ctx context.Context, id string, includeVehicles, includeNotes bool) (*model.Customer, error) {
 	customer, err := s.customerRepo.GetByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get customer: %w", err)
@@ -146,7 +146,7 @@ func (s *CustomerService) UpdateCustomer(ctx context.Context, update model.Custo
 }
 
 // DeleteCustomer deletes a customer (soft delete by deactivating)
-func (s *CustomerService) DeleteCustomer(ctx context.Context, id int64) error {
+func (s *CustomerService) DeleteCustomer(ctx context.Context, id string) error {
 	// Verificar que el cliente existe
 	customer, err := s.customerRepo.GetByID(ctx, id)
 	if err != nil {
@@ -221,7 +221,7 @@ func (s *CustomerService) GetCustomerByTaxID(ctx context.Context, taxID string) 
 }
 
 // ActivateCustomer activates a customer
-func (s *CustomerService) ActivateCustomer(ctx context.Context, id int64) error {
+func (s *CustomerService) ActivateCustomer(ctx context.Context, id string) error {
 	customer, err := s.customerRepo.GetByID(ctx, id)
 	if err != nil {
 		return fmt.Errorf("failed to get customer: %w", err)
@@ -237,7 +237,7 @@ func (s *CustomerService) ActivateCustomer(ctx context.Context, id int64) error 
 }
 
 // DeactivateCustomer deactivates a customer
-func (s *CustomerService) DeactivateCustomer(ctx context.Context, id int64) error {
+func (s *CustomerService) DeactivateCustomer(ctx context.Context, id string) error {
 	customer, err := s.customerRepo.GetByID(ctx, id)
 	if err != nil {
 		return fmt.Errorf("failed to get customer: %w", err)
@@ -308,7 +308,7 @@ func (s *CustomerService) AddCustomerNote(ctx context.Context, create model.Cust
 }
 
 // GetCustomerNotes retrieves notes for a customer
-func (s *CustomerService) GetCustomerNotes(ctx context.Context, customerID int64, noteType string, limit int) ([]*model.CustomerNote, error) {
+func (s *CustomerService) GetCustomerNotes(ctx context.Context, customerID string, noteType string, limit int) ([]*model.CustomerNote, error) {
 	// Verificar que el cliente existe
 	_, err := s.customerRepo.GetByID(ctx, customerID)
 	if err != nil {
@@ -327,7 +327,7 @@ func (s *CustomerService) GetCustomerNotes(ctx context.Context, customerID int64
 }
 
 // SetCustomerPreference sets a preference for a customer
-func (s *CustomerService) SetCustomerPreference(ctx context.Context, customerID int64, key string, value interface{}) error {
+func (s *CustomerService) SetCustomerPreference(ctx context.Context, customerID string, key string, value interface{}) error {
 	customer, err := s.customerRepo.GetByID(ctx, customerID)
 	if err != nil {
 		return fmt.Errorf("failed to get customer: %w", err)
@@ -343,7 +343,7 @@ func (s *CustomerService) SetCustomerPreference(ctx context.Context, customerID 
 }
 
 // GetCustomerPreference gets a preference for a customer
-func (s *CustomerService) GetCustomerPreference(ctx context.Context, customerID int64, key string) (interface{}, error) {
+func (s *CustomerService) GetCustomerPreference(ctx context.Context, customerID string, key string) (interface{}, error) {
 	customer, err := s.customerRepo.GetByID(ctx, customerID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get customer: %w", err)

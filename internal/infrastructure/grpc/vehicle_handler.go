@@ -66,8 +66,8 @@ func (h *VehicleHandler) ListVehicles(ctx context.Context, req *customerpb.ListV
 
 // GetVehicle retrieves a vehicle by ID
 func (h *VehicleHandler) GetVehicle(ctx context.Context, req *customerpb.GetVehicleRequest) (*customerpb.GetVehicleResponse, error) {
-	if req.Id <= 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "vehicle ID must be positive")
+	if req.Id == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "vehicle ID is required")
 	}
 
 	vehicle, err := h.vehicleService.GetVehicle(ctx, req.Id)
@@ -86,8 +86,8 @@ func (h *VehicleHandler) GetVehicle(ctx context.Context, req *customerpb.GetVehi
 // CreateVehicle creates a new vehicle
 func (h *VehicleHandler) CreateVehicle(ctx context.Context, req *customerpb.CreateVehicleRequest) (*customerpb.CreateVehicleResponse, error) {
 	// Validar entrada
-	if req.CustomerId <= 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "customer ID must be positive")
+	if req.CustomerId == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "customer ID is required")
 	}
 	if req.Make == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "make is required")
@@ -139,8 +139,8 @@ func (h *VehicleHandler) CreateVehicle(ctx context.Context, req *customerpb.Crea
 
 // UpdateVehicle updates an existing vehicle
 func (h *VehicleHandler) UpdateVehicle(ctx context.Context, req *customerpb.UpdateVehicleRequest) (*customerpb.UpdateVehicleResponse, error) {
-	if req.Id <= 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "vehicle ID must be positive")
+	if req.Id == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "vehicle ID is required")
 	}
 
 	// Convertir de protobuf a modelo
@@ -203,8 +203,8 @@ func (h *VehicleHandler) UpdateVehicle(ctx context.Context, req *customerpb.Upda
 
 // DeleteVehicle deletes a vehicle
 func (h *VehicleHandler) DeleteVehicle(ctx context.Context, req *customerpb.DeleteVehicleRequest) (*customerpb.DeleteVehicleResponse, error) {
-	if req.Id <= 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "vehicle ID must be positive")
+	if req.Id == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "vehicle ID is required")
 	}
 
 	err := h.vehicleService.DeleteVehicle(ctx, req.Id)

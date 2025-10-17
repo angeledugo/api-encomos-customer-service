@@ -7,15 +7,15 @@ import (
 
 // CustomerStats representa las estadísticas calculadas de un cliente
 type CustomerStats struct {
-	CustomerID         int64     `db:"customer_id" json:"customer_id"`
-	TotalOrders        int32     `db:"total_orders" json:"total_orders"`
-	TotalSpent         float64   `db:"total_spent" json:"total_spent"`
-	AverageOrderValue  float64   `db:"average_order_value" json:"average_order_value"`
-	LastVisit          time.Time `db:"last_visit" json:"last_visit"`
-	VisitsCount        int32     `db:"visits_count" json:"visits_count"`
-	FavoriteCategory   string    `db:"favorite_category" json:"favorite_category"`
-	FavoriteProducts   []string  `db:"favorite_products" json:"favorite_products"`
-	CalculatedAt       time.Time `db:"calculated_at" json:"calculated_at"`
+	CustomerID        int64     `db:"customer_id" json:"customer_id"`
+	TotalOrders       int32     `db:"total_orders" json:"total_orders"`
+	TotalSpent        float64   `db:"total_spent" json:"total_spent"`
+	AverageOrderValue float64   `db:"average_order_value" json:"average_order_value"`
+	LastVisit         time.Time `db:"last_visit" json:"last_visit"`
+	VisitsCount       int32     `db:"visits_count" json:"visits_count"`
+	FavoriteCategory  string    `db:"favorite_category" json:"favorite_category"`
+	FavoriteProducts  []string  `db:"favorite_products" json:"favorite_products"`
+	CalculatedAt      time.Time `db:"calculated_at" json:"calculated_at"`
 
 	// Campos no persistidos (relaciones)
 	Customer *Customer `db:"-" json:"customer,omitempty"`
@@ -23,14 +23,14 @@ type CustomerStats struct {
 
 // CustomerStatsCreate representa los datos para crear estadísticas de cliente
 type CustomerStatsCreate struct {
-	CustomerID         int64
-	TotalOrders        int32
-	TotalSpent         float64
-	AverageOrderValue  float64
-	LastVisit          time.Time
-	VisitsCount        int32
-	FavoriteCategory   string
-	FavoriteProducts   []string
+	CustomerID        int64
+	TotalOrders       int32
+	TotalSpent        float64
+	AverageOrderValue float64
+	LastVisit         time.Time
+	VisitsCount       int32
+	FavoriteCategory  string
+	FavoriteProducts  []string
 }
 
 // CustomerHistoryItem representa un item del historial del cliente
@@ -48,7 +48,7 @@ type CustomerHistoryItem struct {
 // CustomerHistoryFilter representa los filtros para el historial del cliente
 type CustomerHistoryFilter struct {
 	CustomerID int64
-	Type       string     // order, appointment, note, payment
+	Type       string // order, appointment, note, payment
 	DateFrom   *time.Time
 	DateTo     *time.Time
 	Page       int
@@ -58,17 +58,17 @@ type CustomerHistoryFilter struct {
 // NewCustomerStats crea nuevas estadísticas desde CustomerStatsCreate
 func NewCustomerStats(create CustomerStatsCreate) *CustomerStats {
 	now := time.Now()
-	
+
 	stats := &CustomerStats{
-		CustomerID:         create.CustomerID,
-		TotalOrders:        create.TotalOrders,
-		TotalSpent:         create.TotalSpent,
-		AverageOrderValue:  create.AverageOrderValue,
-		LastVisit:          create.LastVisit,
-		VisitsCount:        create.VisitsCount,
-		FavoriteCategory:   create.FavoriteCategory,
-		FavoriteProducts:   create.FavoriteProducts,
-		CalculatedAt:       now,
+		CustomerID:        create.CustomerID,
+		TotalOrders:       create.TotalOrders,
+		TotalSpent:        create.TotalSpent,
+		AverageOrderValue: create.AverageOrderValue,
+		LastVisit:         create.LastVisit,
+		VisitsCount:       create.VisitsCount,
+		FavoriteCategory:  create.FavoriteCategory,
+		FavoriteProducts:  create.FavoriteProducts,
+		CalculatedAt:      now,
 	}
 
 	// Calcular promedio si no está definido
@@ -148,7 +148,7 @@ func (cs *CustomerStats) DaysSinceLastVisit() int {
 // GetVisitFrequency devuelve una descripción de la frecuencia de visitas
 func (cs *CustomerStats) GetVisitFrequency() string {
 	daysSince := cs.DaysSinceLastVisit()
-	
+
 	if daysSince <= 7 {
 		return "Muy frecuente"
 	} else if daysSince <= 30 {
@@ -215,11 +215,11 @@ func (cs *CustomerStats) AddOrder(amount float64, visitDate time.Time) {
 	cs.TotalOrders++
 	cs.TotalSpent += amount
 	cs.VisitsCount++
-	
+
 	if visitDate.After(cs.LastVisit) {
 		cs.LastVisit = visitDate
 	}
-	
+
 	cs.RecalculateAverageOrderValue()
 	cs.UpdateCalculatedAt()
 }

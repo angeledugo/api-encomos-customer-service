@@ -53,14 +53,14 @@ func (r *customerNoteRepository) Create(ctx context.Context, note *model.Custome
 }
 
 // GetByID retrieves a customer note by ID
-func (r *customerNoteRepository) GetByID(ctx context.Context, id int64) (*model.CustomerNote, error) {
+func (r *customerNoteRepository) GetByID(ctx context.Context, id string) (*model.CustomerNote, error) {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	query := `
-		SELECT cn.id, cn.customer_id, cn.staff_id, cn.staff_name, 
+		SELECT cn.id, cn.customer_id, cn.staff_id, cn.staff_name,
 			   cn.note, cn.type, cn.created_at
 		FROM customer_notes cn
 		INNER JOIN customers c ON cn.customer_id = c.id
@@ -80,7 +80,7 @@ func (r *customerNoteRepository) GetByID(ctx context.Context, id int64) (*model.
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("customer note with ID %d not found", id)
+			return nil, fmt.Errorf("customer note with ID %s not found", id)
 		}
 		return nil, fmt.Errorf("failed to get customer note: %w", err)
 	}
@@ -89,14 +89,14 @@ func (r *customerNoteRepository) GetByID(ctx context.Context, id int64) (*model.
 }
 
 // Delete deletes a customer note
-func (r *customerNoteRepository) Delete(ctx context.Context, id int64) error {
+func (r *customerNoteRepository) Delete(ctx context.Context, id string) error {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return err
 	}
 
 	query := `
-		DELETE FROM customer_notes 
+		DELETE FROM customer_notes
 		USING customers c
 		WHERE customer_notes.id = $1 AND customer_notes.customer_id = c.id`
 
@@ -111,7 +111,7 @@ func (r *customerNoteRepository) Delete(ctx context.Context, id int64) error {
 	}
 
 	if rowsAffected == 0 {
-		return fmt.Errorf("customer note with ID %d not found", id)
+		return fmt.Errorf("customer note with ID %s not found", id)
 	}
 
 	return nil
@@ -130,7 +130,7 @@ func (r *customerNoteRepository) List(ctx context.Context, filter model.Customer
 	argCount := 0
 
 	// Always filter by customer if provided
-	if filter.CustomerID > 0 {
+	if filter.CustomerID != "" {
 		argCount++
 		whereConditions = append(whereConditions, fmt.Sprintf("cn.customer_id = $%d", argCount))
 		args = append(args, filter.CustomerID)
@@ -226,7 +226,7 @@ func (r *customerNoteRepository) List(ctx context.Context, filter model.Customer
 }
 
 // ListByCustomer retrieves all notes for a customer
-func (r *customerNoteRepository) ListByCustomer(ctx context.Context, customerID int64) ([]*model.CustomerNote, error) {
+func (r *customerNoteRepository) ListByCustomer(ctx context.Context, customerID string) ([]*model.CustomerNote, error) {
 	filter := model.CustomerNoteFilter{
 		CustomerID: customerID,
 		Limit:      100, // Get all notes for customer
@@ -236,7 +236,7 @@ func (r *customerNoteRepository) ListByCustomer(ctx context.Context, customerID 
 }
 
 // ListByCustomerAndType retrieves notes for a customer by type
-func (r *customerNoteRepository) ListByCustomerAndType(ctx context.Context, customerID int64, noteType string) ([]*model.CustomerNote, error) {
+func (r *customerNoteRepository) ListByCustomerAndType(ctx context.Context, customerID string, noteType string) ([]*model.CustomerNote, error) {
 	filter := model.CustomerNoteFilter{
 		CustomerID: customerID,
 		Type:       noteType,
@@ -247,7 +247,7 @@ func (r *customerNoteRepository) ListByCustomerAndType(ctx context.Context, cust
 }
 
 // ListByStaff retrieves notes created by a staff member
-func (r *customerNoteRepository) ListByStaff(ctx context.Context, staffID int64, page, limit int) ([]*model.CustomerNote, int, error) {
+func (r *customerNoteRepository) ListByStaff(ctx context.Context, staffID string, page, limit int) ([]*model.CustomerNote, int, error) {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return nil, 0, err
@@ -362,7 +362,7 @@ func (r *customerNoteRepository) ListRecent(ctx context.Context, limit int) ([]*
 }
 
 // ListByDateRange retrieves notes for a customer within a date range
-func (r *customerNoteRepository) ListByDateRange(ctx context.Context, customerID int64, from, to *time.Time) ([]*model.CustomerNote, error) {
+func (r *customerNoteRepository) ListByDateRange(ctx context.Context, customerID string, from, to *time.Time) ([]*model.CustomerNote, error) {
 	filter := model.CustomerNoteFilter{
 		CustomerID: customerID,
 		DateFrom:   from,
@@ -374,7 +374,7 @@ func (r *customerNoteRepository) ListByDateRange(ctx context.Context, customerID
 }
 
 // ListRecentByCustomer retrieves recent notes for a specific customer
-func (r *customerNoteRepository) ListRecentByCustomer(ctx context.Context, customerID int64, limit int) ([]*model.CustomerNote, error) {
+func (r *customerNoteRepository) ListRecentByCustomer(ctx context.Context, customerID string, limit int) ([]*model.CustomerNote, error) {
 	filter := model.CustomerNoteFilter{
 		CustomerID: customerID,
 		Limit:      limit,
@@ -403,7 +403,7 @@ func (r *customerNoteRepository) Count(ctx context.Context) (int64, error) {
 }
 
 // CountByCustomer counts notes for a specific customer
-func (r *customerNoteRepository) CountByCustomer(ctx context.Context, customerID int64) (int64, error) {
+func (r *customerNoteRepository) CountByCustomer(ctx context.Context, customerID string) (int64, error) {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return 0, err
@@ -411,8 +411,8 @@ func (r *customerNoteRepository) CountByCustomer(ctx context.Context, customerID
 
 	var count int64
 	err = r.db.QueryRowWithTenant(ctx, tenantID, `
-		SELECT COUNT(*) 
-		FROM customer_notes cn 
+		SELECT COUNT(*)
+		FROM customer_notes cn
 		INNER JOIN customers c ON cn.customer_id = c.id
 		WHERE cn.customer_id = $1`, customerID).Scan(&count)
 	if err != nil {
@@ -443,7 +443,7 @@ func (r *customerNoteRepository) CountByType(ctx context.Context, noteType strin
 }
 
 // CountByStaff counts notes created by a staff member
-func (r *customerNoteRepository) CountByStaff(ctx context.Context, staffID int64) (int64, error) {
+func (r *customerNoteRepository) CountByStaff(ctx context.Context, staffID string) (int64, error) {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return 0, err
@@ -451,8 +451,8 @@ func (r *customerNoteRepository) CountByStaff(ctx context.Context, staffID int64
 
 	var count int64
 	err = r.db.QueryRowWithTenant(ctx, tenantID, `
-		SELECT COUNT(*) 
-		FROM customer_notes cn 
+		SELECT COUNT(*)
+		FROM customer_notes cn
 		INNER JOIN customers c ON cn.customer_id = c.id
 		WHERE cn.staff_id = $1`, staffID).Scan(&count)
 	if err != nil {
@@ -463,7 +463,7 @@ func (r *customerNoteRepository) CountByStaff(ctx context.Context, staffID int64
 }
 
 // GetNoteTypesCount returns count of notes by type for a customer
-func (r *customerNoteRepository) GetNoteTypesCount(ctx context.Context, customerID int64) (map[string]int64, error) {
+func (r *customerNoteRepository) GetNoteTypesCount(ctx context.Context, customerID string) (map[string]int64, error) {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return nil, err
@@ -523,7 +523,7 @@ func (r *customerNoteRepository) GetMostActiveStaff(ctx context.Context, limit i
 
 	var result []map[string]interface{}
 	for rows.Next() {
-		var staffID int64
+		var staffID string
 		var staffName string
 		var noteCount int64
 		var lastNoteCreated time.Time

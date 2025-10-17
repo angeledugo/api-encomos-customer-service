@@ -3,6 +3,7 @@ package grpc
 import (
 	"context"
 	"database/sql"
+	"fmt"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -79,8 +80,8 @@ func (h *CustomerHandler) ListCustomers(ctx context.Context, req *customerpb.Lis
 
 // GetCustomer retrieves a customer by ID
 func (h *CustomerHandler) GetCustomer(ctx context.Context, req *customerpb.GetCustomerRequest) (*customerpb.GetCustomerResponse, error) {
-	if req.Id <= 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "customer ID must be positive")
+	if req.Id == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "customer ID is required")
 	}
 
 	customer, err := h.customerService.GetCustomer(ctx, req.Id, req.IncludeVehicles, req.IncludeNotes)
@@ -117,7 +118,7 @@ func (h *CustomerHandler) CreateCustomer(ctx context.Context, req *customerpb.Cr
 
 	// Convertir de protobuf a modelo
 	create := model.CustomerCreate{
-		TenantID:     tenantID,
+		TenantID:     fmt.Sprintf("%d", tenantID),
 		FirstName:    req.FirstName,
 		LastName:     req.LastName,
 		Email:        stringPtrFromProto(req.Email),
@@ -158,8 +159,8 @@ func (h *CustomerHandler) CreateCustomer(ctx context.Context, req *customerpb.Cr
 
 // UpdateCustomer updates an existing customer
 func (h *CustomerHandler) UpdateCustomer(ctx context.Context, req *customerpb.UpdateCustomerRequest) (*customerpb.UpdateCustomerResponse, error) {
-	if req.Id <= 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "customer ID must be positive")
+	if req.Id == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "customer ID is required")
 	}
 
 	// Convertir de protobuf a modelo
@@ -229,8 +230,8 @@ func (h *CustomerHandler) UpdateCustomer(ctx context.Context, req *customerpb.Up
 
 // DeleteCustomer deletes a customer
 func (h *CustomerHandler) DeleteCustomer(ctx context.Context, req *customerpb.DeleteCustomerRequest) (*customerpb.DeleteCustomerResponse, error) {
-	if req.Id <= 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "customer ID must be positive")
+	if req.Id == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "customer ID is required")
 	}
 
 	err := h.customerService.DeleteCustomer(ctx, req.Id)
@@ -297,8 +298,8 @@ func (h *CustomerHandler) SearchCustomers(ctx context.Context, req *customerpb.S
 
 // AddCustomerNote adds a note to a customer
 func (h *CustomerHandler) AddCustomerNote(ctx context.Context, req *customerpb.AddCustomerNoteRequest) (*customerpb.AddCustomerNoteResponse, error) {
-	if req.CustomerId <= 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "customer ID must be positive")
+	if req.CustomerId == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "customer ID is required")
 	}
 	if req.Note == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "note content is required")
@@ -307,7 +308,7 @@ func (h *CustomerHandler) AddCustomerNote(ctx context.Context, req *customerpb.A
 	// Por ahora, usar valores dummy para staff info - esto se obtendrá del token JWT en producción
 	create := model.CustomerNoteCreate{
 		CustomerID: req.CustomerId,
-		StaffID:    1,             // TODO: Obtener del contexto de autenticación
+		StaffID:    "1",           // TODO: Obtener del contexto de autenticación
 		StaffName:  "System User", // TODO: Obtener del contexto de autenticación
 		Note:       req.Note,
 		Type:       req.Type,
@@ -335,8 +336,8 @@ func (h *CustomerHandler) AddCustomerNote(ctx context.Context, req *customerpb.A
 
 // GetCustomerHistory retrieves customer history (placeholder implementation)
 func (h *CustomerHandler) GetCustomerHistory(ctx context.Context, req *customerpb.GetCustomerHistoryRequest) (*customerpb.GetCustomerHistoryResponse, error) {
-	if req.CustomerId <= 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "customer ID must be positive")
+	if req.CustomerId == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "customer ID is required")
 	}
 
 	// TODO: Implementar lógica real de historial cuando tengamos integración con sales/appointments

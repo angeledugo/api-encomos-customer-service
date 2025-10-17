@@ -10,12 +10,12 @@ import (
 type CustomerStatsRepository interface {
 	// CRUD básico
 	Create(ctx context.Context, stats *model.CustomerStats) error
-	GetByCustomerID(ctx context.Context, customerID int64) (*model.CustomerStats, error)
+	GetByCustomerID(ctx context.Context, customerID string) (*model.CustomerStats, error)
 	Update(ctx context.Context, stats *model.CustomerStats) error
-	Delete(ctx context.Context, customerID int64) error
+	Delete(ctx context.Context, customerID string) error
 
 	// Operaciones de cálculo
-	CalculateAndSave(ctx context.Context, customerID int64) (*model.CustomerStats, error)
+	CalculateAndSave(ctx context.Context, customerID string) (*model.CustomerStats, error)
 	RecalculateAll(ctx context.Context) error
 	RecalculateOutdated(ctx context.Context) error
 
@@ -36,7 +36,7 @@ type CustomerStatsRepository interface {
 	GetTotalRevenue(ctx context.Context) (float64, error)
 
 	// Validaciones y utilidades
-	Exists(ctx context.Context, customerID int64) (bool, error)
+	Exists(ctx context.Context, customerID string) (bool, error)
 	GetOutdatedStats(ctx context.Context) ([]*model.CustomerStats, error)
 	Count(ctx context.Context) (int64, error)
 }

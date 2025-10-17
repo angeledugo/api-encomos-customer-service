@@ -15,24 +15,24 @@ type Logger struct {
 // NewWithService creates a new logger instance for a specific service
 func NewWithService(serviceName string) *Logger {
 	logger := logrus.New()
-	
+
 	// Set log level from environment or default to Info
 	level := os.Getenv("LOG_LEVEL")
 	if level == "" {
 		level = "info"
 	}
-	
+
 	logLevel, err := logrus.ParseLevel(level)
 	if err != nil {
 		logLevel = logrus.InfoLevel
 	}
 	logger.SetLevel(logLevel)
-	
+
 	// Set JSON formatter
 	logger.SetFormatter(&logrus.JSONFormatter{
 		TimestampFormat: "2006-01-02T15:04:05.000Z07:00",
 	})
-	
+
 	return &Logger{
 		Logger:  logger,
 		service: serviceName,

@@ -11,20 +11,20 @@ import (
 
 // Vehicle representa un vehículo asociado a un cliente (para AutoParts)
 type Vehicle struct {
-	ID           int64            `db:"id" json:"id"`
-	CustomerID   int64            `db:"customer_id" json:"customer_id" validate:"required"`
-	Make         string           `db:"make" json:"make" validate:"required,min=1,max=50"`
-	Model        string           `db:"model" json:"model" validate:"required,min=1,max=50"`
-	Year         int              `db:"year" json:"year" validate:"required,min=1900,max=2100"`
-	VIN          *string          `db:"vin" json:"vin" validate:"omitempty,max=17"`
-	LicensePlate *string          `db:"license_plate" json:"license_plate" validate:"omitempty,max=20"`
-	Color        *string          `db:"color" json:"color" validate:"omitempty,max=30"`
-	Engine       *string          `db:"engine" json:"engine" validate:"omitempty,max=100"`
-	Notes        *string          `db:"notes" json:"notes" validate:"omitempty,max=500"`
-	IsActive     bool             `db:"is_active" json:"is_active"`
-	Metadata     VehicleMetadata  `db:"metadata" json:"metadata"`
-	CreatedAt    time.Time        `db:"created_at" json:"created_at"`
-	UpdatedAt    time.Time        `db:"updated_at" json:"updated_at"`
+	ID           string          `db:"id" json:"id"`
+	CustomerID   string          `db:"customer_id" json:"customer_id" validate:"required"`
+	Make         string          `db:"make" json:"make" validate:"required,min=1,max=50"`
+	Model        string          `db:"model" json:"model" validate:"required,min=1,max=50"`
+	Year         int             `db:"year" json:"year" validate:"required,min=1900,max=2100"`
+	VIN          *string         `db:"vin" json:"vin" validate:"omitempty,max=17"`
+	LicensePlate *string         `db:"license_plate" json:"license_plate" validate:"omitempty,max=20"`
+	Color        *string         `db:"color" json:"color" validate:"omitempty,max=30"`
+	Engine       *string         `db:"engine" json:"engine" validate:"omitempty,max=100"`
+	Notes        *string         `db:"notes" json:"notes" validate:"omitempty,max=500"`
+	IsActive     bool            `db:"is_active" json:"is_active"`
+	Metadata     VehicleMetadata `db:"metadata" json:"metadata"`
+	CreatedAt    time.Time       `db:"created_at" json:"created_at"`
+	UpdatedAt    time.Time       `db:"updated_at" json:"updated_at"`
 
 	// Campos no persistidos (relaciones)
 	Customer *Customer `db:"-" json:"customer,omitempty"`
@@ -58,7 +58,7 @@ func (vm *VehicleMetadata) Scan(value interface{}) error {
 
 // VehicleCreate representa los datos para crear un nuevo vehículo
 type VehicleCreate struct {
-	CustomerID   int64
+	CustomerID   string
 	Make         string
 	Model        string
 	Year         int
@@ -72,7 +72,7 @@ type VehicleCreate struct {
 
 // VehicleUpdate representa los datos para actualizar un vehículo
 type VehicleUpdate struct {
-	ID           int64
+	ID           string
 	Make         *string
 	Model        *string
 	Year         *int
@@ -87,7 +87,7 @@ type VehicleUpdate struct {
 
 // VehicleFilter representa los filtros para búsqueda de vehículos
 type VehicleFilter struct {
-	CustomerID int64
+	CustomerID string
 	Search     string
 	ActiveOnly bool
 	Page       int
@@ -97,7 +97,7 @@ type VehicleFilter struct {
 // NewVehicle crea un nuevo vehículo desde VehicleCreate
 func NewVehicle(create VehicleCreate) *Vehicle {
 	now := time.Now()
-	
+
 	vehicle := &Vehicle{
 		CustomerID:   create.CustomerID,
 		Make:         create.Make,
@@ -130,15 +130,15 @@ func (v *Vehicle) DisplayName() string {
 // FullDescription devuelve una descripción completa del vehículo
 func (v *Vehicle) FullDescription() string {
 	description := v.DisplayName()
-	
+
 	if v.Color != nil && *v.Color != "" {
 		description += fmt.Sprintf(" (%s)", *v.Color)
 	}
-	
+
 	if v.LicensePlate != nil && *v.LicensePlate != "" {
 		description += fmt.Sprintf(" - Placa: %s", *v.LicensePlate)
 	}
-	
+
 	return description
 }
 
@@ -274,7 +274,7 @@ func (v *Vehicle) GetCompatibilityString() string {
 
 // Validate valida los datos del vehículo
 func (v *Vehicle) Validate() error {
-	if v.CustomerID <= 0 {
+	if v.CustomerID == "" {
 		return &ValidationError{Field: "customer_id", Message: "ID de cliente es requerido"}
 	}
 	if v.Make == "" {

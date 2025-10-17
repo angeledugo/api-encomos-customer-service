@@ -59,12 +59,12 @@ func (r *customerRepository) Create(ctx context.Context, customer *model.Custome
 		return fmt.Errorf("failed to create customer: %w", err)
 	}
 
-	customer.TenantID = tenantID
+	customer.TenantID = fmt.Sprintf("%d", tenantID)
 	return nil
 }
 
 // GetByID retrieves a customer by ID
-func (r *customerRepository) GetByID(ctx context.Context, id int64) (*model.Customer, error) {
+func (r *customerRepository) GetByID(ctx context.Context, id string) (*model.Customer, error) {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return nil, err
@@ -74,7 +74,7 @@ func (r *customerRepository) GetByID(ctx context.Context, id int64) (*model.Cust
 		SELECT id, tenant_id, first_name, last_name, email, phone,
 			   customer_type, company_name, tax_id, address, birthday,
 			   notes, preferences, is_active, created_at, updated_at
-		FROM customers 
+		FROM customers
 		WHERE id = $1`
 
 	customer := &model.Customer{}
@@ -102,7 +102,7 @@ func (r *customerRepository) GetByID(ctx context.Context, id int64) (*model.Cust
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("customer with ID %d not found", id)
+			return nil, fmt.Errorf("customer with ID %s not found", id)
 		}
 		return nil, fmt.Errorf("failed to get customer: %w", err)
 	}
@@ -161,14 +161,14 @@ func (r *customerRepository) Update(ctx context.Context, customer *model.Custome
 	}
 
 	if rowsAffected == 0 {
-		return fmt.Errorf("customer with ID %d not found", customer.ID)
+		return fmt.Errorf("customer with ID %s not found", customer.ID)
 	}
 
 	return nil
 }
 
 // Delete deletes a customer
-func (r *customerRepository) Delete(ctx context.Context, id int64) error {
+func (r *customerRepository) Delete(ctx context.Context, id string) error {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return err
@@ -187,7 +187,7 @@ func (r *customerRepository) Delete(ctx context.Context, id int64) error {
 	}
 
 	if rowsAffected == 0 {
-		return fmt.Errorf("customer with ID %d not found", id)
+		return fmt.Errorf("customer with ID %s not found", id)
 	}
 
 	return nil
@@ -698,7 +698,7 @@ func (r *customerRepository) CountActive(ctx context.Context) (int64, error) {
 }
 
 // ExistsByEmail checks if a customer exists by email
-func (r *customerRepository) ExistsByEmail(ctx context.Context, email string, excludeID *int64) (bool, error) {
+func (r *customerRepository) ExistsByEmail(ctx context.Context, email string, excludeID *string) (bool, error) {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return false, err
@@ -722,7 +722,7 @@ func (r *customerRepository) ExistsByEmail(ctx context.Context, email string, ex
 }
 
 // ExistsByTaxID checks if a customer exists by tax ID
-func (r *customerRepository) ExistsByTaxID(ctx context.Context, taxID string, excludeID *int64) (bool, error) {
+func (r *customerRepository) ExistsByTaxID(ctx context.Context, taxID string, excludeID *string) (bool, error) {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return false, err

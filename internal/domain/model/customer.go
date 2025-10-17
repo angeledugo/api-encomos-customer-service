@@ -16,8 +16,8 @@ const (
 
 // Customer representa un cliente en el sistema
 type Customer struct {
-	ID           int64               `db:"id" json:"id"`
-	TenantID     int64               `db:"tenant_id" json:"tenant_id"`
+	ID           string              `db:"id" json:"id"`
+	TenantID     string              `db:"tenant_id" json:"tenant_id"`
 	FirstName    string              `db:"first_name" json:"first_name" validate:"required,min=1,max=100"`
 	LastName     string              `db:"last_name" json:"last_name" validate:"required,min=1,max=100"`
 	Email        *string             `db:"email" json:"email" validate:"omitempty,email,max=255"`
@@ -67,7 +67,7 @@ func (cp *CustomerPreferences) Scan(value interface{}) error {
 
 // CustomerCreate representa los datos para crear un nuevo cliente
 type CustomerCreate struct {
-	TenantID     int64
+	TenantID     string
 	FirstName    string
 	LastName     string
 	Email        *string
@@ -83,7 +83,7 @@ type CustomerCreate struct {
 
 // CustomerUpdate representa los datos para actualizar un cliente
 type CustomerUpdate struct {
-	ID           int64
+	ID           string
 	FirstName    *string
 	LastName     *string
 	Email        *string

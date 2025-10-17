@@ -60,7 +60,7 @@ func (r *vehicleRepository) Create(ctx context.Context, vehicle *model.Vehicle) 
 }
 
 // GetByID retrieves a vehicle by ID
-func (r *vehicleRepository) GetByID(ctx context.Context, id int64) (*model.Vehicle, error) {
+func (r *vehicleRepository) GetByID(ctx context.Context, id string) (*model.Vehicle, error) {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return nil, err
@@ -96,7 +96,7 @@ func (r *vehicleRepository) GetByID(ctx context.Context, id int64) (*model.Vehic
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("vehicle with ID %d not found", id)
+			return nil, fmt.Errorf("vehicle with ID %s not found", id)
 		}
 		return nil, fmt.Errorf("failed to get vehicle: %w", err)
 	}
@@ -151,14 +151,14 @@ func (r *vehicleRepository) Update(ctx context.Context, vehicle *model.Vehicle) 
 	}
 
 	if rowsAffected == 0 {
-		return fmt.Errorf("vehicle with ID %d not found", vehicle.ID)
+		return fmt.Errorf("vehicle with ID %s not found", vehicle.ID)
 	}
 
 	return nil
 }
 
 // Delete deletes a vehicle
-func (r *vehicleRepository) Delete(ctx context.Context, id int64) error {
+func (r *vehicleRepository) Delete(ctx context.Context, id string) error {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return err
@@ -180,7 +180,7 @@ func (r *vehicleRepository) Delete(ctx context.Context, id int64) error {
 	}
 
 	if rowsAffected == 0 {
-		return fmt.Errorf("vehicle with ID %d not found", id)
+		return fmt.Errorf("vehicle with ID %s not found", id)
 	}
 
 	return nil
@@ -199,7 +199,7 @@ func (r *vehicleRepository) List(ctx context.Context, filter model.VehicleFilter
 	argCount := 0
 
 	// Always filter by customer if provided
-	if filter.CustomerID > 0 {
+	if filter.CustomerID != "" {
 		argCount++
 		whereConditions = append(whereConditions, fmt.Sprintf("v.customer_id = $%d", argCount))
 		args = append(args, filter.CustomerID)
@@ -305,7 +305,7 @@ func (r *vehicleRepository) List(ctx context.Context, filter model.VehicleFilter
 }
 
 // ListByCustomer retrieves all vehicles for a customer
-func (r *vehicleRepository) ListByCustomer(ctx context.Context, customerID int64) ([]*model.Vehicle, error) {
+func (r *vehicleRepository) ListByCustomer(ctx context.Context, customerID string) ([]*model.Vehicle, error) {
 	filter := model.VehicleFilter{
 		CustomerID: customerID,
 		Limit:      100, // Get all vehicles for customer
@@ -649,7 +649,7 @@ func (r *vehicleRepository) Count(ctx context.Context) (int64, error) {
 }
 
 // CountByCustomer counts vehicles for a specific customer
-func (r *vehicleRepository) CountByCustomer(ctx context.Context, customerID int64) (int64, error) {
+func (r *vehicleRepository) CountByCustomer(ctx context.Context, customerID string) (int64, error) {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return 0, err
@@ -657,8 +657,8 @@ func (r *vehicleRepository) CountByCustomer(ctx context.Context, customerID int6
 
 	var count int64
 	err = r.db.QueryRowWithTenant(ctx, tenantID, `
-		SELECT COUNT(*) 
-		FROM vehicles v 
+		SELECT COUNT(*)
+		FROM vehicles v
 		INNER JOIN customers c ON v.customer_id = c.id
 		WHERE v.customer_id = $1`, customerID).Scan(&count)
 	if err != nil {
@@ -689,15 +689,15 @@ func (r *vehicleRepository) CountActive(ctx context.Context) (int64, error) {
 }
 
 // ExistsByVIN checks if a vehicle exists by VIN
-func (r *vehicleRepository) ExistsByVIN(ctx context.Context, vin string, excludeID *int64) (bool, error) {
+func (r *vehicleRepository) ExistsByVIN(ctx context.Context, vin string, excludeID *string) (bool, error) {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return false, err
 	}
 
 	query := `
-		SELECT COUNT(*) 
-		FROM vehicles v 
+		SELECT COUNT(*)
+		FROM vehicles v
 		INNER JOIN customers c ON v.customer_id = c.id
 		WHERE v.vin = $1`
 	args := []interface{}{vin}
@@ -717,15 +717,15 @@ func (r *vehicleRepository) ExistsByVIN(ctx context.Context, vin string, exclude
 }
 
 // ExistsByLicensePlate checks if a vehicle exists by license plate
-func (r *vehicleRepository) ExistsByLicensePlate(ctx context.Context, licensePlate string, excludeID *int64) (bool, error) {
+func (r *vehicleRepository) ExistsByLicensePlate(ctx context.Context, licensePlate string, excludeID *string) (bool, error) {
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
 		return false, err
 	}
 
 	query := `
-		SELECT COUNT(*) 
-		FROM vehicles v 
+		SELECT COUNT(*)
+		FROM vehicles v
 		INNER JOIN customers c ON v.customer_id = c.id
 		WHERE v.license_plate = $1`
 	args := []interface{}{licensePlate}
@@ -791,7 +791,7 @@ func (r *vehicleRepository) CreateBatch(ctx context.Context, vehicles []*model.V
 }
 
 // ListActiveByCustomer retrieves all active vehicles for a customer
-func (r *vehicleRepository) ListActiveByCustomer(ctx context.Context, customerID int64) ([]*model.Vehicle, error) {
+func (r *vehicleRepository) ListActiveByCustomer(ctx context.Context, customerID string) ([]*model.Vehicle, error) {
 	filter := model.VehicleFilter{
 		CustomerID: customerID,
 		ActiveOnly: true,

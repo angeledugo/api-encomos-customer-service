@@ -17,9 +17,9 @@ const (
 
 // CustomerNote representa una nota sobre un cliente
 type CustomerNote struct {
-	ID         int64     `db:"id" json:"id"`
-	CustomerID int64     `db:"customer_id" json:"customer_id" validate:"required"`
-	StaffID    int64     `db:"staff_id" json:"staff_id" validate:"required"`
+	ID         string    `db:"id" json:"id"`
+	CustomerID string    `db:"customer_id" json:"customer_id" validate:"required"`
+	StaffID    string    `db:"staff_id" json:"staff_id" validate:"required"`
 	StaffName  string    `db:"staff_name" json:"staff_name" validate:"required,min=1,max=200"`
 	Note       string    `db:"note" json:"note" validate:"required,min=1,max=2000"`
 	Type       string    `db:"type" json:"type" validate:"required,oneof=general service complaint compliment reminder warning"`
@@ -31,8 +31,8 @@ type CustomerNote struct {
 
 // CustomerNoteCreate representa los datos para crear una nueva nota
 type CustomerNoteCreate struct {
-	CustomerID int64
-	StaffID    int64
+	CustomerID string
+	StaffID    string
 	StaffName  string
 	Note       string
 	Type       string
@@ -40,7 +40,7 @@ type CustomerNoteCreate struct {
 
 // CustomerNoteFilter representa los filtros para búsqueda de notas
 type CustomerNoteFilter struct {
-	CustomerID int64
+	CustomerID string
 	Type       string
 	DateFrom   *time.Time
 	DateTo     *time.Time
@@ -51,7 +51,7 @@ type CustomerNoteFilter struct {
 // NewCustomerNote crea una nueva nota desde CustomerNoteCreate
 func NewCustomerNote(create CustomerNoteCreate) *CustomerNote {
 	now := time.Now()
-	
+
 	note := &CustomerNote{
 		CustomerID: create.CustomerID,
 		StaffID:    create.StaffID,
@@ -149,18 +149,18 @@ func (cn *CustomerNote) ShortNote(maxLength int) string {
 
 // Summary devuelve un resumen de la nota incluyendo tipo y autor
 func (cn *CustomerNote) Summary() string {
-	return fmt.Sprintf("[%s] %s - %s", 
-		cn.GetTypeDisplayName(), 
-		cn.StaffName, 
+	return fmt.Sprintf("[%s] %s - %s",
+		cn.GetTypeDisplayName(),
+		cn.StaffName,
 		cn.FormattedCreatedAt())
 }
 
 // Validate valida los datos de la nota
 func (cn *CustomerNote) Validate() error {
-	if cn.CustomerID <= 0 {
+	if cn.CustomerID == "" {
 		return &ValidationError{Field: "customer_id", Message: "ID de cliente es requerido"}
 	}
-	if cn.StaffID <= 0 {
+	if cn.StaffID == "" {
 		return &ValidationError{Field: "staff_id", Message: "ID de staff es requerido"}
 	}
 	if cn.StaffName == "" {
@@ -188,7 +188,7 @@ func isValidNoteType(noteType string) bool {
 		NoteTypeReminder,
 		NoteTypeWarning,
 	}
-	
+
 	for _, validType := range validTypes {
 		if noteType == validType {
 			return true

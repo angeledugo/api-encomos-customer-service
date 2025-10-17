@@ -15,27 +15,27 @@ import (
 func LoggingInterceptor(logger *logger.Logger) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 		start := time.Now()
-		
+
 		logger.WithFields(map[string]interface{}{
 			"method": info.FullMethod,
 			"type":   "unary",
 		}).Info("gRPC request started")
-		
+
 		resp, err := handler(ctx, req)
-		
+
 		duration := time.Since(start)
 		logEntry := logger.WithFields(map[string]interface{}{
 			"method":   info.FullMethod,
 			"duration": duration.String(),
 			"type":     "unary",
 		})
-		
+
 		if err != nil {
 			logEntry.WithError(err).Error("gRPC request failed")
 		} else {
 			logEntry.Info("gRPC request completed")
 		}
-		
+
 		return resp, err
 	}
 }
@@ -50,11 +50,11 @@ func RecoveryInterceptor(logger *logger.Logger) grpc.UnaryServerInterceptor {
 					"panic":  r,
 					"stack":  string(debug.Stack()),
 				}).Error("gRPC handler panicked")
-				
+
 				err = status.Errorf(codes.Internal, "internal server error")
 			}
 		}()
-		
+
 		return handler(ctx, req)
 	}
 }
@@ -63,27 +63,27 @@ func RecoveryInterceptor(logger *logger.Logger) grpc.UnaryServerInterceptor {
 func StreamLoggingInterceptor(logger *logger.Logger) grpc.StreamServerInterceptor {
 	return func(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
 		start := time.Now()
-		
+
 		logger.WithFields(map[string]interface{}{
 			"method": info.FullMethod,
 			"type":   "stream",
 		}).Info("gRPC stream started")
-		
+
 		err := handler(srv, stream)
-		
+
 		duration := time.Since(start)
 		logEntry := logger.WithFields(map[string]interface{}{
 			"method":   info.FullMethod,
 			"duration": duration.String(),
 			"type":     "stream",
 		})
-		
+
 		if err != nil {
 			logEntry.WithError(err).Error("gRPC stream failed")
 		} else {
 			logEntry.Info("gRPC stream completed")
 		}
-		
+
 		return err
 	}
 }
@@ -98,11 +98,11 @@ func StreamRecoveryInterceptor(logger *logger.Logger) grpc.StreamServerIntercept
 					"panic":  r,
 					"stack":  string(debug.Stack()),
 				}).Error("gRPC stream handler panicked")
-				
+
 				err = status.Errorf(codes.Internal, "internal server error")
 			}
 		}()
-		
+
 		return handler(srv, stream)
 	}
 }

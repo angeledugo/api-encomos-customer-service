@@ -75,7 +75,7 @@ func (s *VehicleService) CreateVehicle(ctx context.Context, create model.Vehicle
 }
 
 // GetVehicle retrieves a vehicle by ID
-func (s *VehicleService) GetVehicle(ctx context.Context, id int64) (*model.Vehicle, error) {
+func (s *VehicleService) GetVehicle(ctx context.Context, id string) (*model.Vehicle, error) {
 	vehicle, err := s.vehicleRepo.GetByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get vehicle: %w", err)
@@ -140,7 +140,7 @@ func (s *VehicleService) UpdateVehicle(ctx context.Context, update model.Vehicle
 }
 
 // DeleteVehicle deletes a vehicle
-func (s *VehicleService) DeleteVehicle(ctx context.Context, id int64) error {
+func (s *VehicleService) DeleteVehicle(ctx context.Context, id string) error {
 	// Verificar que el vehículo existe
 	_, err := s.vehicleRepo.GetByID(ctx, id)
 	if err != nil {
@@ -166,7 +166,7 @@ func (s *VehicleService) ListVehicles(ctx context.Context, filter model.VehicleF
 }
 
 // ListVehiclesByCustomer lists all vehicles for a customer
-func (s *VehicleService) ListVehiclesByCustomer(ctx context.Context, customerID int64) ([]*model.Vehicle, error) {
+func (s *VehicleService) ListVehiclesByCustomer(ctx context.Context, customerID string) ([]*model.Vehicle, error) {
 	// Verificar que el cliente existe
 	_, err := s.customerRepo.GetByID(ctx, customerID)
 	if err != nil {
@@ -225,7 +225,7 @@ func (s *VehicleService) FindCompatibleVehicles(ctx context.Context, make, model
 }
 
 // GetVehicleCompatibilityInfo returns compatibility information for a vehicle
-func (s *VehicleService) GetVehicleCompatibilityInfo(ctx context.Context, id int64) (map[string]interface{}, error) {
+func (s *VehicleService) GetVehicleCompatibilityInfo(ctx context.Context, id string) (map[string]interface{}, error) {
 	vehicle, err := s.vehicleRepo.GetByID(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get vehicle: %w", err)
@@ -255,7 +255,7 @@ func (s *VehicleService) GetVehicleCompatibilityInfo(ctx context.Context, id int
 }
 
 // ActivateVehicle activates a vehicle
-func (s *VehicleService) ActivateVehicle(ctx context.Context, id int64) error {
+func (s *VehicleService) ActivateVehicle(ctx context.Context, id string) error {
 	vehicle, err := s.vehicleRepo.GetByID(ctx, id)
 	if err != nil {
 		return fmt.Errorf("failed to get vehicle: %w", err)
@@ -271,7 +271,7 @@ func (s *VehicleService) ActivateVehicle(ctx context.Context, id int64) error {
 }
 
 // DeactivateVehicle deactivates a vehicle
-func (s *VehicleService) DeactivateVehicle(ctx context.Context, id int64) error {
+func (s *VehicleService) DeactivateVehicle(ctx context.Context, id string) error {
 	vehicle, err := s.vehicleRepo.GetByID(ctx, id)
 	if err != nil {
 		return fmt.Errorf("failed to get vehicle: %w", err)
@@ -287,7 +287,7 @@ func (s *VehicleService) DeactivateVehicle(ctx context.Context, id int64) error 
 }
 
 // CreateVehiclesForCustomer creates multiple vehicles for a customer in a batch
-func (s *VehicleService) CreateVehiclesForCustomer(ctx context.Context, customerID int64, vehicleCreates []model.VehicleCreate) ([]*model.Vehicle, error) {
+func (s *VehicleService) CreateVehiclesForCustomer(ctx context.Context, customerID string, vehicleCreates []model.VehicleCreate) ([]*model.Vehicle, error) {
 	// Verificar que el cliente existe
 	_, err := s.customerRepo.GetByID(ctx, customerID)
 	if err != nil {

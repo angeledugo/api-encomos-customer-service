@@ -10,9 +10,9 @@ import (
 type CustomerRepository interface {
 	// CRUD básico
 	Create(ctx context.Context, customer *model.Customer) error
-	GetByID(ctx context.Context, id int64) (*model.Customer, error)
+	GetByID(ctx context.Context, id string) (*model.Customer, error)
 	Update(ctx context.Context, customer *model.Customer) error
-	Delete(ctx context.Context, id int64) error
+	Delete(ctx context.Context, id string) error
 
 	// Búsquedas
 	List(ctx context.Context, filter model.CustomerFilter) ([]*model.Customer, int, error)
@@ -31,6 +31,6 @@ type CustomerRepository interface {
 	CountActive(ctx context.Context) (int64, error)
 
 	// Validaciones
-	ExistsByEmail(ctx context.Context, email string, excludeID *int64) (bool, error)
-	ExistsByTaxID(ctx context.Context, taxID string, excludeID *int64) (bool, error)
+	ExistsByEmail(ctx context.Context, email string, excludeID *string) (bool, error)
+	ExistsByTaxID(ctx context.Context, taxID string, excludeID *string) (bool, error)
 }
