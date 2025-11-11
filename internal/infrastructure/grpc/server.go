@@ -41,11 +41,13 @@ func NewServer(cfg *config.GRPCConfig) (*Server, error) {
 	// Create gRPC server with middleware
 	serverOptions := []grpc.ServerOption{
 		grpc.ChainUnaryInterceptor(
+			middleware.TenantInterceptor(logger),
 			middleware.LoggingInterceptor(logger),
 			middleware.RecoveryInterceptor(logger),
 			// TODO: Add authentication interceptor when auth service is ready
 		),
 		grpc.ChainStreamInterceptor(
+			middleware.StreamTenantInterceptor(logger),
 			middleware.StreamLoggingInterceptor(logger),
 			middleware.StreamRecoveryInterceptor(logger),
 		),

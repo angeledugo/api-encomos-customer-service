@@ -60,32 +60,37 @@ const (
 	TenantIDKey contextKey = "tenant_id"
 )
 
-// WithTenantID adds tenant ID to context
-func WithTenantID(ctx context.Context, tenantID int64) context.Context {
+// WithTenantID adds tenant ID (UUID string) to context
+func WithTenantID(ctx context.Context, tenantID string) context.Context {
 	return context.WithValue(ctx, TenantIDKey, tenantID)
 }
 
 // GetTenantID extracts tenant ID from context
-func GetTenantID(ctx context.Context) (int64, bool) {
-	tenantID, ok := ctx.Value(TenantIDKey).(int64)
+func GetTenantID(ctx context.Context) (string, bool) {
+	tenantID, ok := ctx.Value(TenantIDKey).(string)
 	return tenantID, ok
 }
 
 // SetTenantID sets the tenant ID in the database session for RLS
-func (db *DB) SetTenantID(ctx context.Context, tenantID int64) error {
-	_, err := db.ExecContext(ctx, "SET app.current_tenant_id = $1", tenantID)
+func (db *DB) SetTenantID(ctx context.Context, tenantID string) error {
+	// PostgreSQL SET command doesn't accept placeholders, must use string formatting
+	// Safe because tenant_id is validated as UUID format
+	query := fmt.Sprintf("SET app.current_tenant_id = '%s'", tenantID)
+	_, err := db.ExecContext(ctx, query)
 	return err
 }
 
 // BeginTx starts a new transaction with tenant ID set
-func (db *DB) BeginTxWithTenant(ctx context.Context, tenantID int64) (*sql.Tx, error) {
+func (db *DB) BeginTxWithTenant(ctx context.Context, tenantID string) (*sql.Tx, error) {
 	tx, err := db.BeginTx(ctx, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	// Set tenant ID for RLS
-	if _, err := tx.ExecContext(ctx, "SET app.current_tenant_id = $1", tenantID); err != nil {
+	// PostgreSQL SET command doesn't accept placeholders
+	query := fmt.Sprintf("SET app.current_tenant_id = '%s'", tenantID)
+	if _, err := tx.ExecContext(ctx, query); err != nil {
 		tx.Rollback()
 		return nil, fmt.Errorf("failed to set tenant ID: %w", err)
 	}
@@ -94,7 +99,7 @@ func (db *DB) BeginTxWithTenant(ctx context.Context, tenantID int64) (*sql.Tx, e
 }
 
 // ExecWithTenant executes a query with tenant ID set
-func (db *DB) ExecWithTenant(ctx context.Context, tenantID int64, query string, args ...interface{}) (sql.Result, error) {
+func (db *DB) ExecWithTenant(ctx context.Context, tenantID string, query string, args ...interface{}) (sql.Result, error) {
 	// Set tenant ID
 	if err := db.SetTenantID(ctx, tenantID); err != nil {
 		return nil, err
@@ -104,7 +109,7 @@ func (db *DB) ExecWithTenant(ctx context.Context, tenantID int64, query string, 
 }
 
 // QueryWithTenant executes a query with tenant ID set
-func (db *DB) QueryWithTenant(ctx context.Context, tenantID int64, query string, args ...interface{}) (*sql.Rows, error) {
+func (db *DB) QueryWithTenant(ctx context.Context, tenantID string, query string, args ...interface{}) (*sql.Rows, error) {
 	// Set tenant ID
 	if err := db.SetTenantID(ctx, tenantID); err != nil {
 		return nil, err
@@ -114,7 +119,7 @@ func (db *DB) QueryWithTenant(ctx context.Context, tenantID int64, query string,
 }
 
 // QueryRowWithTenant executes a query that returns a single row with tenant ID set
-func (db *DB) QueryRowWithTenant(ctx context.Context, tenantID int64, query string, args ...interface{}) *sql.Row {
+func (db *DB) QueryRowWithTenant(ctx context.Context, tenantID string, query string, args ...interface{}) *sql.Row {
 	// Set tenant ID - ignore error as we can't return it from QueryRow
 	db.SetTenantID(ctx, tenantID)
 
@@ -122,21 +127,21 @@ func (db *DB) QueryRowWithTenant(ctx context.Context, tenantID int64, query stri
 }
 
 // GetTenantIDFromContext extracts tenant ID from context
-func GetTenantIDFromContext(ctx context.Context) (int64, error) {
+func GetTenantIDFromContext(ctx context.Context) (string, error) {
 	tenantID, ok := GetTenantID(ctx)
 	if !ok {
-		return 0, fmt.Errorf("tenant ID not found in context")
+		return "", fmt.Errorf("tenant ID not found in context")
 	}
 	return tenantID, nil
 }
 
 // WithTenantContext creates a context with tenant ID
-func WithTenantContext(ctx context.Context, tenantID int64) context.Context {
+func WithTenantContext(ctx context.Context, tenantID string) context.Context {
 	return WithTenantID(ctx, tenantID)
 }
 
 // Transaction helper function that sets tenant ID and runs a function in a transaction
-func (db *DB) TransactionWithTenant(ctx context.Context, tenantID int64, fn func(*sql.Tx) error) error {
+func (db *DB) TransactionWithTenant(ctx context.Context, tenantID string, fn func(*sql.Tx) error) error {
 	tx, err := db.BeginTxWithTenant(ctx, tenantID)
 	if err != nil {
 		return err

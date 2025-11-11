@@ -195,10 +195,21 @@ func (r *customerRepository) Delete(ctx context.Context, id string) error {
 
 // List retrieves customers with filtering and pagination
 func (r *customerRepository) List(ctx context.Context, filter model.CustomerFilter) ([]*model.Customer, int, error) {
+	// DEBUG: Verificar tenant_id en contexto ANTES de GetTenantIDFromContext
+	tenantIDValue := ctx.Value("tenant_id")
+	println("DEBUG REPO: tenant_id from context:", tenantIDValue)
+	if tenantIDValue != nil {
+		println("DEBUG REPO: tenant_id type:", fmt.Sprintf("%T", tenantIDValue))
+	} else {
+		println("DEBUG REPO: tenant_id is NIL in context!")
+	}
+
 	tenantID, err := GetTenantIDFromContext(ctx)
 	if err != nil {
+		println("DEBUG REPO: GetTenantIDFromContext ERROR:", err.Error())
 		return nil, 0, err
 	}
+	println("DEBUG REPO: tenantID extracted successfully:", tenantID)
 
 	// Build WHERE clause
 	var whereConditions []string
@@ -248,9 +259,12 @@ func (r *customerRepository) List(ctx context.Context, filter model.CustomerFilt
 
 	// Count total records
 	countQuery := fmt.Sprintf("SELECT COUNT(*) FROM customers %s", whereClause)
+	println("DEBUG REPO: countQuery =", countQuery)
+	println("DEBUG REPO: args =", fmt.Sprintf("%v", args))
 	var total int
 	err = r.db.QueryRowWithTenant(ctx, tenantID, countQuery, args...).Scan(&total)
 	if err != nil {
+		println("DEBUG REPO: QueryRowWithTenant ERROR:", err.Error())
 		return nil, 0, fmt.Errorf("failed to count customers: %w", err)
 	}
 

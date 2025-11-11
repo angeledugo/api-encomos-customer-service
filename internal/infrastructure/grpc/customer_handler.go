@@ -32,6 +32,16 @@ func NewCustomerHandler(customerService *service.CustomerService, vehicleService
 
 // ListCustomers lists customers with filtering and pagination
 func (h *CustomerHandler) ListCustomers(ctx context.Context, req *customerpb.ListCustomersRequest) (*customerpb.ListCustomersResponse, error) {
+	// DEBUG: Verificar tenant_id en contexto
+	tenantIDValue := ctx.Value("tenant_id")
+	println("DEBUG HANDLER: tenant_id from context:", tenantIDValue)
+	if tenantIDValue != nil {
+		println("DEBUG HANDLER: tenant_id type:", fmt.Sprintf("%T", tenantIDValue))
+		println("DEBUG HANDLER: tenant_id value:", tenantIDValue.(string))
+	} else {
+		println("DEBUG HANDLER: tenant_id is NIL in context!")
+	}
+
 	// Validar entrada
 	if req.Page < 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "page must be non-negative")
@@ -110,15 +120,19 @@ func (h *CustomerHandler) CreateCustomer(ctx context.Context, req *customerpb.Cr
 		return nil, status.Errorf(codes.InvalidArgument, "customer type is required")
 	}
 
-	// Extraer tenant ID del contexto
-	tenantID, err := extractTenantIDFromContext(ctx)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to extract tenant ID: %v", err)
+	// Extraer tenant ID del contexto (puesto por TenantInterceptor)
+	tenantIDValue := ctx.Value("tenant_id")
+	if tenantIDValue == nil {
+		return nil, status.Errorf(codes.Internal, "tenant ID not found in context")
+	}
+	tenantID, ok := tenantIDValue.(string)
+	if !ok {
+		return nil, status.Errorf(codes.Internal, "invalid tenant ID type in context")
 	}
 
 	// Convertir de protobuf a modelo
 	create := model.CustomerCreate{
-		TenantID:     fmt.Sprintf("%d", tenantID),
+		TenantID:     tenantID,
 		FirstName:    req.FirstName,
 		LastName:     req.LastName,
 		Email:        stringPtrFromProto(req.Email),
@@ -454,12 +468,6 @@ func (h *CustomerHandler) customerNoteToProto(note *model.CustomerNote) *custome
 }
 
 // Helper functions
-
-func extractTenantIDFromContext(ctx context.Context) (int64, error) {
-	// TODO: Implementar extracción real del tenant ID desde el contexto/JWT
-	// Por ahora, retornar un valor dummy
-	return 1, nil
-}
 
 func stringPtrFromProto(s string) *string {
 	if s == "" {

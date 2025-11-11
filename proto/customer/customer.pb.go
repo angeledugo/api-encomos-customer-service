@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.10
 // 	protoc        v4.25.7
-// source: proto/customer/customer.proto
+// source: customer/customer.proto
 
 package customerpb
 
@@ -51,7 +51,7 @@ type Customer struct {
 
 func (x *Customer) Reset() {
 	*x = Customer{}
-	mi := &file_proto_customer_customer_proto_msgTypes[0]
+	mi := &file_customer_customer_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -63,7 +63,7 @@ func (x *Customer) String() string {
 func (*Customer) ProtoMessage() {}
 
 func (x *Customer) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[0]
+	mi := &file_customer_customer_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -76,7 +76,7 @@ func (x *Customer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Customer.ProtoReflect.Descriptor instead.
 func (*Customer) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{0}
+	return file_customer_customer_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Customer) GetId() string {
@@ -234,7 +234,7 @@ type Vehicle struct {
 
 func (x *Vehicle) Reset() {
 	*x = Vehicle{}
-	mi := &file_proto_customer_customer_proto_msgTypes[1]
+	mi := &file_customer_customer_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -246,7 +246,7 @@ func (x *Vehicle) String() string {
 func (*Vehicle) ProtoMessage() {}
 
 func (x *Vehicle) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[1]
+	mi := &file_customer_customer_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -259,7 +259,7 @@ func (x *Vehicle) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Vehicle.ProtoReflect.Descriptor instead.
 func (*Vehicle) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{1}
+	return file_customer_customer_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Vehicle) GetId() string {
@@ -375,7 +375,7 @@ type CustomerNote struct {
 
 func (x *CustomerNote) Reset() {
 	*x = CustomerNote{}
-	mi := &file_proto_customer_customer_proto_msgTypes[2]
+	mi := &file_customer_customer_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -387,7 +387,7 @@ func (x *CustomerNote) String() string {
 func (*CustomerNote) ProtoMessage() {}
 
 func (x *CustomerNote) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[2]
+	mi := &file_customer_customer_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -400,7 +400,7 @@ func (x *CustomerNote) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CustomerNote.ProtoReflect.Descriptor instead.
 func (*CustomerNote) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{2}
+	return file_customer_customer_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *CustomerNote) GetId() string {
@@ -467,7 +467,7 @@ type CustomerStats struct {
 
 func (x *CustomerStats) Reset() {
 	*x = CustomerStats{}
-	mi := &file_proto_customer_customer_proto_msgTypes[3]
+	mi := &file_customer_customer_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -479,7 +479,7 @@ func (x *CustomerStats) String() string {
 func (*CustomerStats) ProtoMessage() {}
 
 func (x *CustomerStats) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[3]
+	mi := &file_customer_customer_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -492,7 +492,7 @@ func (x *CustomerStats) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CustomerStats.ProtoReflect.Descriptor instead.
 func (*CustomerStats) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{3}
+	return file_customer_customer_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *CustomerStats) GetTotalOrders() int32 {
@@ -547,20 +547,21 @@ func (x *CustomerStats) GetFavoriteProducts() []string {
 // Customer Requests/Responses
 type ListCustomersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Search        string                 `protobuf:"bytes,1,opt,name=search,proto3" json:"search,omitempty"`
-	CustomerType  string                 `protobuf:"bytes,2,opt,name=customer_type,json=customerType,proto3" json:"customer_type,omitempty"`
-	ActiveOnly    bool                   `protobuf:"varint,3,opt,name=active_only,json=activeOnly,proto3" json:"active_only,omitempty"`
-	Page          int32                  `protobuf:"varint,4,opt,name=page,proto3" json:"page,omitempty"`
-	Limit         int32                  `protobuf:"varint,5,opt,name=limit,proto3" json:"limit,omitempty"`
-	SortBy        string                 `protobuf:"bytes,6,opt,name=sort_by,json=sortBy,proto3" json:"sort_by,omitempty"`          // name, created_at, last_visit, total_spent
-	SortOrder     string                 `protobuf:"bytes,7,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"` // asc, desc
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Search        string                 `protobuf:"bytes,2,opt,name=search,proto3" json:"search,omitempty"`
+	CustomerType  string                 `protobuf:"bytes,3,opt,name=customer_type,json=customerType,proto3" json:"customer_type,omitempty"`
+	ActiveOnly    bool                   `protobuf:"varint,4,opt,name=active_only,json=activeOnly,proto3" json:"active_only,omitempty"`
+	Page          int32                  `protobuf:"varint,5,opt,name=page,proto3" json:"page,omitempty"`
+	Limit         int32                  `protobuf:"varint,6,opt,name=limit,proto3" json:"limit,omitempty"`
+	SortBy        string                 `protobuf:"bytes,7,opt,name=sort_by,json=sortBy,proto3" json:"sort_by,omitempty"`          // name, created_at, last_visit, total_spent
+	SortOrder     string                 `protobuf:"bytes,8,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"` // asc, desc
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListCustomersRequest) Reset() {
 	*x = ListCustomersRequest{}
-	mi := &file_proto_customer_customer_proto_msgTypes[4]
+	mi := &file_customer_customer_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -572,7 +573,7 @@ func (x *ListCustomersRequest) String() string {
 func (*ListCustomersRequest) ProtoMessage() {}
 
 func (x *ListCustomersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[4]
+	mi := &file_customer_customer_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -585,7 +586,14 @@ func (x *ListCustomersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCustomersRequest.ProtoReflect.Descriptor instead.
 func (*ListCustomersRequest) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{4}
+	return file_customer_customer_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ListCustomersRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
 }
 
 func (x *ListCustomersRequest) GetSearch() string {
@@ -650,7 +658,7 @@ type ListCustomersResponse struct {
 
 func (x *ListCustomersResponse) Reset() {
 	*x = ListCustomersResponse{}
-	mi := &file_proto_customer_customer_proto_msgTypes[5]
+	mi := &file_customer_customer_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -662,7 +670,7 @@ func (x *ListCustomersResponse) String() string {
 func (*ListCustomersResponse) ProtoMessage() {}
 
 func (x *ListCustomersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[5]
+	mi := &file_customer_customer_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -675,7 +683,7 @@ func (x *ListCustomersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCustomersResponse.ProtoReflect.Descriptor instead.
 func (*ListCustomersResponse) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{5}
+	return file_customer_customer_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ListCustomersResponse) GetCustomers() []*Customer {
@@ -715,17 +723,18 @@ func (x *ListCustomersResponse) GetTotalPages() int32 {
 
 type GetCustomerRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	Id              string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	IncludeVehicles bool                   `protobuf:"varint,2,opt,name=include_vehicles,json=includeVehicles,proto3" json:"include_vehicles,omitempty"`
-	IncludeNotes    bool                   `protobuf:"varint,3,opt,name=include_notes,json=includeNotes,proto3" json:"include_notes,omitempty"`
-	IncludeStats    bool                   `protobuf:"varint,4,opt,name=include_stats,json=includeStats,proto3" json:"include_stats,omitempty"`
+	TenantId        string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Id              string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	IncludeVehicles bool                   `protobuf:"varint,3,opt,name=include_vehicles,json=includeVehicles,proto3" json:"include_vehicles,omitempty"`
+	IncludeNotes    bool                   `protobuf:"varint,4,opt,name=include_notes,json=includeNotes,proto3" json:"include_notes,omitempty"`
+	IncludeStats    bool                   `protobuf:"varint,5,opt,name=include_stats,json=includeStats,proto3" json:"include_stats,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
 
 func (x *GetCustomerRequest) Reset() {
 	*x = GetCustomerRequest{}
-	mi := &file_proto_customer_customer_proto_msgTypes[6]
+	mi := &file_customer_customer_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -737,7 +746,7 @@ func (x *GetCustomerRequest) String() string {
 func (*GetCustomerRequest) ProtoMessage() {}
 
 func (x *GetCustomerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[6]
+	mi := &file_customer_customer_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -750,7 +759,14 @@ func (x *GetCustomerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCustomerRequest.ProtoReflect.Descriptor instead.
 func (*GetCustomerRequest) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{6}
+	return file_customer_customer_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *GetCustomerRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
 }
 
 func (x *GetCustomerRequest) GetId() string {
@@ -790,7 +806,7 @@ type GetCustomerResponse struct {
 
 func (x *GetCustomerResponse) Reset() {
 	*x = GetCustomerResponse{}
-	mi := &file_proto_customer_customer_proto_msgTypes[7]
+	mi := &file_customer_customer_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -802,7 +818,7 @@ func (x *GetCustomerResponse) String() string {
 func (*GetCustomerResponse) ProtoMessage() {}
 
 func (x *GetCustomerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[7]
+	mi := &file_customer_customer_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -815,7 +831,7 @@ func (x *GetCustomerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCustomerResponse.ProtoReflect.Descriptor instead.
 func (*GetCustomerResponse) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{7}
+	return file_customer_customer_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *GetCustomerResponse) GetCustomer() *Customer {
@@ -827,25 +843,26 @@ func (x *GetCustomerResponse) GetCustomer() *Customer {
 
 type CreateCustomerRequest struct {
 	state         protoimpl.MessageState  `protogen:"open.v1"`
-	FirstName     string                  `protobuf:"bytes,1,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
-	LastName      string                  `protobuf:"bytes,2,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
-	Email         string                  `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
-	Phone         string                  `protobuf:"bytes,4,opt,name=phone,proto3" json:"phone,omitempty"`
-	CustomerType  string                  `protobuf:"bytes,5,opt,name=customer_type,json=customerType,proto3" json:"customer_type,omitempty"`
-	CompanyName   string                  `protobuf:"bytes,6,opt,name=company_name,json=companyName,proto3" json:"company_name,omitempty"`
-	TaxId         string                  `protobuf:"bytes,7,opt,name=tax_id,json=taxId,proto3" json:"tax_id,omitempty"`
-	Address       string                  `protobuf:"bytes,8,opt,name=address,proto3" json:"address,omitempty"`
-	Birthday      *timestamppb.Timestamp  `protobuf:"bytes,9,opt,name=birthday,proto3" json:"birthday,omitempty"`
-	Notes         string                  `protobuf:"bytes,10,opt,name=notes,proto3" json:"notes,omitempty"`
-	Preferences   *structpb.Struct        `protobuf:"bytes,11,opt,name=preferences,proto3" json:"preferences,omitempty"`
-	Vehicles      []*CreateVehicleRequest `protobuf:"bytes,12,rep,name=vehicles,proto3" json:"vehicles,omitempty"`
+	TenantId      string                  `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	FirstName     string                  `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
+	LastName      string                  `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
+	Email         string                  `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
+	Phone         string                  `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`
+	CustomerType  string                  `protobuf:"bytes,6,opt,name=customer_type,json=customerType,proto3" json:"customer_type,omitempty"`
+	CompanyName   string                  `protobuf:"bytes,7,opt,name=company_name,json=companyName,proto3" json:"company_name,omitempty"`
+	TaxId         string                  `protobuf:"bytes,8,opt,name=tax_id,json=taxId,proto3" json:"tax_id,omitempty"`
+	Address       string                  `protobuf:"bytes,9,opt,name=address,proto3" json:"address,omitempty"`
+	Birthday      *timestamppb.Timestamp  `protobuf:"bytes,10,opt,name=birthday,proto3" json:"birthday,omitempty"`
+	Notes         string                  `protobuf:"bytes,11,opt,name=notes,proto3" json:"notes,omitempty"`
+	Preferences   *structpb.Struct        `protobuf:"bytes,12,opt,name=preferences,proto3" json:"preferences,omitempty"`
+	Vehicles      []*CreateVehicleRequest `protobuf:"bytes,13,rep,name=vehicles,proto3" json:"vehicles,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreateCustomerRequest) Reset() {
 	*x = CreateCustomerRequest{}
-	mi := &file_proto_customer_customer_proto_msgTypes[8]
+	mi := &file_customer_customer_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -857,7 +874,7 @@ func (x *CreateCustomerRequest) String() string {
 func (*CreateCustomerRequest) ProtoMessage() {}
 
 func (x *CreateCustomerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[8]
+	mi := &file_customer_customer_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -870,7 +887,14 @@ func (x *CreateCustomerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCustomerRequest.ProtoReflect.Descriptor instead.
 func (*CreateCustomerRequest) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{8}
+	return file_customer_customer_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *CreateCustomerRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
 }
 
 func (x *CreateCustomerRequest) GetFirstName() string {
@@ -966,7 +990,7 @@ type CreateCustomerResponse struct {
 
 func (x *CreateCustomerResponse) Reset() {
 	*x = CreateCustomerResponse{}
-	mi := &file_proto_customer_customer_proto_msgTypes[9]
+	mi := &file_customer_customer_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -978,7 +1002,7 @@ func (x *CreateCustomerResponse) String() string {
 func (*CreateCustomerResponse) ProtoMessage() {}
 
 func (x *CreateCustomerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[9]
+	mi := &file_customer_customer_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -991,7 +1015,7 @@ func (x *CreateCustomerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCustomerResponse.ProtoReflect.Descriptor instead.
 func (*CreateCustomerResponse) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{9}
+	return file_customer_customer_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *CreateCustomerResponse) GetCustomer() *Customer {
@@ -1003,26 +1027,27 @@ func (x *CreateCustomerResponse) GetCustomer() *Customer {
 
 type UpdateCustomerRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	FirstName     string                 `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
-	LastName      string                 `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
-	Email         string                 `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
-	Phone         string                 `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`
-	CustomerType  string                 `protobuf:"bytes,6,opt,name=customer_type,json=customerType,proto3" json:"customer_type,omitempty"`
-	CompanyName   string                 `protobuf:"bytes,7,opt,name=company_name,json=companyName,proto3" json:"company_name,omitempty"`
-	TaxId         string                 `protobuf:"bytes,8,opt,name=tax_id,json=taxId,proto3" json:"tax_id,omitempty"`
-	Address       string                 `protobuf:"bytes,9,opt,name=address,proto3" json:"address,omitempty"`
-	Birthday      *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=birthday,proto3" json:"birthday,omitempty"`
-	Notes         string                 `protobuf:"bytes,11,opt,name=notes,proto3" json:"notes,omitempty"`
-	Preferences   *structpb.Struct       `protobuf:"bytes,12,opt,name=preferences,proto3" json:"preferences,omitempty"`
-	IsActive      bool                   `protobuf:"varint,13,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	FirstName     string                 `protobuf:"bytes,3,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
+	LastName      string                 `protobuf:"bytes,4,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
+	Email         string                 `protobuf:"bytes,5,opt,name=email,proto3" json:"email,omitempty"`
+	Phone         string                 `protobuf:"bytes,6,opt,name=phone,proto3" json:"phone,omitempty"`
+	CustomerType  string                 `protobuf:"bytes,7,opt,name=customer_type,json=customerType,proto3" json:"customer_type,omitempty"`
+	CompanyName   string                 `protobuf:"bytes,8,opt,name=company_name,json=companyName,proto3" json:"company_name,omitempty"`
+	TaxId         string                 `protobuf:"bytes,9,opt,name=tax_id,json=taxId,proto3" json:"tax_id,omitempty"`
+	Address       string                 `protobuf:"bytes,10,opt,name=address,proto3" json:"address,omitempty"`
+	Birthday      *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=birthday,proto3" json:"birthday,omitempty"`
+	Notes         string                 `protobuf:"bytes,12,opt,name=notes,proto3" json:"notes,omitempty"`
+	Preferences   *structpb.Struct       `protobuf:"bytes,13,opt,name=preferences,proto3" json:"preferences,omitempty"`
+	IsActive      bool                   `protobuf:"varint,14,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UpdateCustomerRequest) Reset() {
 	*x = UpdateCustomerRequest{}
-	mi := &file_proto_customer_customer_proto_msgTypes[10]
+	mi := &file_customer_customer_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1034,7 +1059,7 @@ func (x *UpdateCustomerRequest) String() string {
 func (*UpdateCustomerRequest) ProtoMessage() {}
 
 func (x *UpdateCustomerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[10]
+	mi := &file_customer_customer_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1047,7 +1072,14 @@ func (x *UpdateCustomerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCustomerRequest.ProtoReflect.Descriptor instead.
 func (*UpdateCustomerRequest) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{10}
+	return file_customer_customer_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *UpdateCustomerRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
 }
 
 func (x *UpdateCustomerRequest) GetId() string {
@@ -1150,7 +1182,7 @@ type UpdateCustomerResponse struct {
 
 func (x *UpdateCustomerResponse) Reset() {
 	*x = UpdateCustomerResponse{}
-	mi := &file_proto_customer_customer_proto_msgTypes[11]
+	mi := &file_customer_customer_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1162,7 +1194,7 @@ func (x *UpdateCustomerResponse) String() string {
 func (*UpdateCustomerResponse) ProtoMessage() {}
 
 func (x *UpdateCustomerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[11]
+	mi := &file_customer_customer_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1175,7 +1207,7 @@ func (x *UpdateCustomerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCustomerResponse.ProtoReflect.Descriptor instead.
 func (*UpdateCustomerResponse) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{11}
+	return file_customer_customer_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *UpdateCustomerResponse) GetCustomer() *Customer {
@@ -1187,14 +1219,15 @@ func (x *UpdateCustomerResponse) GetCustomer() *Customer {
 
 type DeleteCustomerRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *DeleteCustomerRequest) Reset() {
 	*x = DeleteCustomerRequest{}
-	mi := &file_proto_customer_customer_proto_msgTypes[12]
+	mi := &file_customer_customer_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1206,7 +1239,7 @@ func (x *DeleteCustomerRequest) String() string {
 func (*DeleteCustomerRequest) ProtoMessage() {}
 
 func (x *DeleteCustomerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[12]
+	mi := &file_customer_customer_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1219,7 +1252,14 @@ func (x *DeleteCustomerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteCustomerRequest.ProtoReflect.Descriptor instead.
 func (*DeleteCustomerRequest) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{12}
+	return file_customer_customer_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *DeleteCustomerRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
 }
 
 func (x *DeleteCustomerRequest) GetId() string {
@@ -1238,7 +1278,7 @@ type DeleteCustomerResponse struct {
 
 func (x *DeleteCustomerResponse) Reset() {
 	*x = DeleteCustomerResponse{}
-	mi := &file_proto_customer_customer_proto_msgTypes[13]
+	mi := &file_customer_customer_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1250,7 +1290,7 @@ func (x *DeleteCustomerResponse) String() string {
 func (*DeleteCustomerResponse) ProtoMessage() {}
 
 func (x *DeleteCustomerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[13]
+	mi := &file_customer_customer_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1263,7 +1303,7 @@ func (x *DeleteCustomerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteCustomerResponse.ProtoReflect.Descriptor instead.
 func (*DeleteCustomerResponse) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{13}
+	return file_customer_customer_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *DeleteCustomerResponse) GetSuccess() bool {
@@ -1287,7 +1327,7 @@ type ListVehiclesRequest struct {
 
 func (x *ListVehiclesRequest) Reset() {
 	*x = ListVehiclesRequest{}
-	mi := &file_proto_customer_customer_proto_msgTypes[14]
+	mi := &file_customer_customer_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1299,7 +1339,7 @@ func (x *ListVehiclesRequest) String() string {
 func (*ListVehiclesRequest) ProtoMessage() {}
 
 func (x *ListVehiclesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[14]
+	mi := &file_customer_customer_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1312,7 +1352,7 @@ func (x *ListVehiclesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListVehiclesRequest.ProtoReflect.Descriptor instead.
 func (*ListVehiclesRequest) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{14}
+	return file_customer_customer_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ListVehiclesRequest) GetCustomerId() string {
@@ -1360,7 +1400,7 @@ type ListVehiclesResponse struct {
 
 func (x *ListVehiclesResponse) Reset() {
 	*x = ListVehiclesResponse{}
-	mi := &file_proto_customer_customer_proto_msgTypes[15]
+	mi := &file_customer_customer_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1372,7 +1412,7 @@ func (x *ListVehiclesResponse) String() string {
 func (*ListVehiclesResponse) ProtoMessage() {}
 
 func (x *ListVehiclesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[15]
+	mi := &file_customer_customer_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1385,7 +1425,7 @@ func (x *ListVehiclesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListVehiclesResponse.ProtoReflect.Descriptor instead.
 func (*ListVehiclesResponse) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{15}
+	return file_customer_customer_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ListVehiclesResponse) GetVehicles() []*Vehicle {
@@ -1411,7 +1451,7 @@ type GetVehicleRequest struct {
 
 func (x *GetVehicleRequest) Reset() {
 	*x = GetVehicleRequest{}
-	mi := &file_proto_customer_customer_proto_msgTypes[16]
+	mi := &file_customer_customer_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1423,7 +1463,7 @@ func (x *GetVehicleRequest) String() string {
 func (*GetVehicleRequest) ProtoMessage() {}
 
 func (x *GetVehicleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[16]
+	mi := &file_customer_customer_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1436,7 +1476,7 @@ func (x *GetVehicleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetVehicleRequest.ProtoReflect.Descriptor instead.
 func (*GetVehicleRequest) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{16}
+	return file_customer_customer_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *GetVehicleRequest) GetId() string {
@@ -1455,7 +1495,7 @@ type GetVehicleResponse struct {
 
 func (x *GetVehicleResponse) Reset() {
 	*x = GetVehicleResponse{}
-	mi := &file_proto_customer_customer_proto_msgTypes[17]
+	mi := &file_customer_customer_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1467,7 +1507,7 @@ func (x *GetVehicleResponse) String() string {
 func (*GetVehicleResponse) ProtoMessage() {}
 
 func (x *GetVehicleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[17]
+	mi := &file_customer_customer_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1480,7 +1520,7 @@ func (x *GetVehicleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetVehicleResponse.ProtoReflect.Descriptor instead.
 func (*GetVehicleResponse) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{17}
+	return file_customer_customer_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *GetVehicleResponse) GetVehicle() *Vehicle {
@@ -1508,7 +1548,7 @@ type CreateVehicleRequest struct {
 
 func (x *CreateVehicleRequest) Reset() {
 	*x = CreateVehicleRequest{}
-	mi := &file_proto_customer_customer_proto_msgTypes[18]
+	mi := &file_customer_customer_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1520,7 +1560,7 @@ func (x *CreateVehicleRequest) String() string {
 func (*CreateVehicleRequest) ProtoMessage() {}
 
 func (x *CreateVehicleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[18]
+	mi := &file_customer_customer_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1533,7 +1573,7 @@ func (x *CreateVehicleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateVehicleRequest.ProtoReflect.Descriptor instead.
 func (*CreateVehicleRequest) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{18}
+	return file_customer_customer_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *CreateVehicleRequest) GetCustomerId() string {
@@ -1615,7 +1655,7 @@ type CreateVehicleResponse struct {
 
 func (x *CreateVehicleResponse) Reset() {
 	*x = CreateVehicleResponse{}
-	mi := &file_proto_customer_customer_proto_msgTypes[19]
+	mi := &file_customer_customer_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1627,7 +1667,7 @@ func (x *CreateVehicleResponse) String() string {
 func (*CreateVehicleResponse) ProtoMessage() {}
 
 func (x *CreateVehicleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[19]
+	mi := &file_customer_customer_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1640,7 +1680,7 @@ func (x *CreateVehicleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateVehicleResponse.ProtoReflect.Descriptor instead.
 func (*CreateVehicleResponse) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{19}
+	return file_customer_customer_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *CreateVehicleResponse) GetVehicle() *Vehicle {
@@ -1669,7 +1709,7 @@ type UpdateVehicleRequest struct {
 
 func (x *UpdateVehicleRequest) Reset() {
 	*x = UpdateVehicleRequest{}
-	mi := &file_proto_customer_customer_proto_msgTypes[20]
+	mi := &file_customer_customer_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1681,7 +1721,7 @@ func (x *UpdateVehicleRequest) String() string {
 func (*UpdateVehicleRequest) ProtoMessage() {}
 
 func (x *UpdateVehicleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[20]
+	mi := &file_customer_customer_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1694,7 +1734,7 @@ func (x *UpdateVehicleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateVehicleRequest.ProtoReflect.Descriptor instead.
 func (*UpdateVehicleRequest) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{20}
+	return file_customer_customer_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *UpdateVehicleRequest) GetId() string {
@@ -1783,7 +1823,7 @@ type UpdateVehicleResponse struct {
 
 func (x *UpdateVehicleResponse) Reset() {
 	*x = UpdateVehicleResponse{}
-	mi := &file_proto_customer_customer_proto_msgTypes[21]
+	mi := &file_customer_customer_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1795,7 +1835,7 @@ func (x *UpdateVehicleResponse) String() string {
 func (*UpdateVehicleResponse) ProtoMessage() {}
 
 func (x *UpdateVehicleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[21]
+	mi := &file_customer_customer_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1808,7 +1848,7 @@ func (x *UpdateVehicleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateVehicleResponse.ProtoReflect.Descriptor instead.
 func (*UpdateVehicleResponse) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{21}
+	return file_customer_customer_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *UpdateVehicleResponse) GetVehicle() *Vehicle {
@@ -1827,7 +1867,7 @@ type DeleteVehicleRequest struct {
 
 func (x *DeleteVehicleRequest) Reset() {
 	*x = DeleteVehicleRequest{}
-	mi := &file_proto_customer_customer_proto_msgTypes[22]
+	mi := &file_customer_customer_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1839,7 +1879,7 @@ func (x *DeleteVehicleRequest) String() string {
 func (*DeleteVehicleRequest) ProtoMessage() {}
 
 func (x *DeleteVehicleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[22]
+	mi := &file_customer_customer_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1852,7 +1892,7 @@ func (x *DeleteVehicleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteVehicleRequest.ProtoReflect.Descriptor instead.
 func (*DeleteVehicleRequest) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{22}
+	return file_customer_customer_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *DeleteVehicleRequest) GetId() string {
@@ -1871,7 +1911,7 @@ type DeleteVehicleResponse struct {
 
 func (x *DeleteVehicleResponse) Reset() {
 	*x = DeleteVehicleResponse{}
-	mi := &file_proto_customer_customer_proto_msgTypes[23]
+	mi := &file_customer_customer_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1883,7 +1923,7 @@ func (x *DeleteVehicleResponse) String() string {
 func (*DeleteVehicleResponse) ProtoMessage() {}
 
 func (x *DeleteVehicleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[23]
+	mi := &file_customer_customer_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1896,7 +1936,7 @@ func (x *DeleteVehicleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteVehicleResponse.ProtoReflect.Descriptor instead.
 func (*DeleteVehicleResponse) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{23}
+	return file_customer_customer_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *DeleteVehicleResponse) GetSuccess() bool {
@@ -1909,16 +1949,17 @@ func (x *DeleteVehicleResponse) GetSuccess() bool {
 // Search Requests/Responses
 type SearchCustomersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Query         string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
-	SearchFields  string                 `protobuf:"bytes,2,opt,name=search_fields,json=searchFields,proto3" json:"search_fields,omitempty"` // name, email, phone, tax_id
-	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Query         string                 `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
+	SearchFields  string                 `protobuf:"bytes,3,opt,name=search_fields,json=searchFields,proto3" json:"search_fields,omitempty"` // name, email, phone, tax_id
+	Limit         int32                  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SearchCustomersRequest) Reset() {
 	*x = SearchCustomersRequest{}
-	mi := &file_proto_customer_customer_proto_msgTypes[24]
+	mi := &file_customer_customer_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1930,7 +1971,7 @@ func (x *SearchCustomersRequest) String() string {
 func (*SearchCustomersRequest) ProtoMessage() {}
 
 func (x *SearchCustomersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[24]
+	mi := &file_customer_customer_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1943,7 +1984,14 @@ func (x *SearchCustomersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchCustomersRequest.ProtoReflect.Descriptor instead.
 func (*SearchCustomersRequest) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{24}
+	return file_customer_customer_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *SearchCustomersRequest) GetTenantId() string {
+	if x != nil {
+		return x.TenantId
+	}
+	return ""
 }
 
 func (x *SearchCustomersRequest) GetQuery() string {
@@ -1977,7 +2025,7 @@ type SearchCustomersResponse struct {
 
 func (x *SearchCustomersResponse) Reset() {
 	*x = SearchCustomersResponse{}
-	mi := &file_proto_customer_customer_proto_msgTypes[25]
+	mi := &file_customer_customer_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1989,7 +2037,7 @@ func (x *SearchCustomersResponse) String() string {
 func (*SearchCustomersResponse) ProtoMessage() {}
 
 func (x *SearchCustomersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[25]
+	mi := &file_customer_customer_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2002,7 +2050,7 @@ func (x *SearchCustomersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchCustomersResponse.ProtoReflect.Descriptor instead.
 func (*SearchCustomersResponse) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{25}
+	return file_customer_customer_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *SearchCustomersResponse) GetCustomers() []*Customer {
@@ -2034,7 +2082,7 @@ type GetCustomerHistoryRequest struct {
 
 func (x *GetCustomerHistoryRequest) Reset() {
 	*x = GetCustomerHistoryRequest{}
-	mi := &file_proto_customer_customer_proto_msgTypes[26]
+	mi := &file_customer_customer_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2046,7 +2094,7 @@ func (x *GetCustomerHistoryRequest) String() string {
 func (*GetCustomerHistoryRequest) ProtoMessage() {}
 
 func (x *GetCustomerHistoryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[26]
+	mi := &file_customer_customer_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2059,7 +2107,7 @@ func (x *GetCustomerHistoryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCustomerHistoryRequest.ProtoReflect.Descriptor instead.
 func (*GetCustomerHistoryRequest) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{26}
+	return file_customer_customer_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *GetCustomerHistoryRequest) GetCustomerId() string {
@@ -2120,7 +2168,7 @@ type CustomerHistoryItem struct {
 
 func (x *CustomerHistoryItem) Reset() {
 	*x = CustomerHistoryItem{}
-	mi := &file_proto_customer_customer_proto_msgTypes[27]
+	mi := &file_customer_customer_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2132,7 +2180,7 @@ func (x *CustomerHistoryItem) String() string {
 func (*CustomerHistoryItem) ProtoMessage() {}
 
 func (x *CustomerHistoryItem) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[27]
+	mi := &file_customer_customer_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2145,7 +2193,7 @@ func (x *CustomerHistoryItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CustomerHistoryItem.ProtoReflect.Descriptor instead.
 func (*CustomerHistoryItem) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{27}
+	return file_customer_customer_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *CustomerHistoryItem) GetId() string {
@@ -2214,7 +2262,7 @@ type GetCustomerHistoryResponse struct {
 
 func (x *GetCustomerHistoryResponse) Reset() {
 	*x = GetCustomerHistoryResponse{}
-	mi := &file_proto_customer_customer_proto_msgTypes[28]
+	mi := &file_customer_customer_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2226,7 +2274,7 @@ func (x *GetCustomerHistoryResponse) String() string {
 func (*GetCustomerHistoryResponse) ProtoMessage() {}
 
 func (x *GetCustomerHistoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[28]
+	mi := &file_customer_customer_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2239,7 +2287,7 @@ func (x *GetCustomerHistoryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCustomerHistoryResponse.ProtoReflect.Descriptor instead.
 func (*GetCustomerHistoryResponse) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{28}
+	return file_customer_customer_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *GetCustomerHistoryResponse) GetItems() []*CustomerHistoryItem {
@@ -2267,7 +2315,7 @@ type AddCustomerNoteRequest struct {
 
 func (x *AddCustomerNoteRequest) Reset() {
 	*x = AddCustomerNoteRequest{}
-	mi := &file_proto_customer_customer_proto_msgTypes[29]
+	mi := &file_customer_customer_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2279,7 +2327,7 @@ func (x *AddCustomerNoteRequest) String() string {
 func (*AddCustomerNoteRequest) ProtoMessage() {}
 
 func (x *AddCustomerNoteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[29]
+	mi := &file_customer_customer_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2292,7 +2340,7 @@ func (x *AddCustomerNoteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddCustomerNoteRequest.ProtoReflect.Descriptor instead.
 func (*AddCustomerNoteRequest) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{29}
+	return file_customer_customer_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *AddCustomerNoteRequest) GetCustomerId() string {
@@ -2325,7 +2373,7 @@ type AddCustomerNoteResponse struct {
 
 func (x *AddCustomerNoteResponse) Reset() {
 	*x = AddCustomerNoteResponse{}
-	mi := &file_proto_customer_customer_proto_msgTypes[30]
+	mi := &file_customer_customer_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2337,7 +2385,7 @@ func (x *AddCustomerNoteResponse) String() string {
 func (*AddCustomerNoteResponse) ProtoMessage() {}
 
 func (x *AddCustomerNoteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_customer_customer_proto_msgTypes[30]
+	mi := &file_customer_customer_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2350,7 +2398,7 @@ func (x *AddCustomerNoteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddCustomerNoteResponse.ProtoReflect.Descriptor instead.
 func (*AddCustomerNoteResponse) Descriptor() ([]byte, []int) {
-	return file_proto_customer_customer_proto_rawDescGZIP(), []int{30}
+	return file_customer_customer_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *AddCustomerNoteResponse) GetNote() *CustomerNote {
@@ -2360,11 +2408,11 @@ func (x *AddCustomerNoteResponse) GetNote() *CustomerNote {
 	return nil
 }
 
-var File_proto_customer_customer_proto protoreflect.FileDescriptor
+var File_customer_customer_proto protoreflect.FileDescriptor
 
-const file_proto_customer_customer_proto_rawDesc = "" +
+const file_customer_customer_proto_rawDesc = "" +
 	"\n" +
-	"\x1dproto/customer/customer.proto\x12\vcustomer.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xda\x05\n" +
+	"\x17customer/customer.proto\x12\vcustomer.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xda\x05\n" +
 	"\bCustomer\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n" +
 	"\ttenant_id\x18\x02 \x01(\tR\btenantId\x12\x1d\n" +
@@ -2428,50 +2476,35 @@ const file_proto_customer_customer_proto_rawDesc = "" +
 	"last_visit\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tlastVisit\x12!\n" +
 	"\fvisits_count\x18\x05 \x01(\x05R\vvisitsCount\x12+\n" +
 	"\x11favorite_category\x18\x06 \x01(\tR\x10favoriteCategory\x12+\n" +
-	"\x11favorite_products\x18\a \x03(\tR\x10favoriteProducts\"\xd6\x01\n" +
-	"\x14ListCustomersRequest\x12\x16\n" +
-	"\x06search\x18\x01 \x01(\tR\x06search\x12#\n" +
-	"\rcustomer_type\x18\x02 \x01(\tR\fcustomerType\x12\x1f\n" +
-	"\vactive_only\x18\x03 \x01(\bR\n" +
+	"\x11favorite_products\x18\a \x03(\tR\x10favoriteProducts\"\xf3\x01\n" +
+	"\x14ListCustomersRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12\x16\n" +
+	"\x06search\x18\x02 \x01(\tR\x06search\x12#\n" +
+	"\rcustomer_type\x18\x03 \x01(\tR\fcustomerType\x12\x1f\n" +
+	"\vactive_only\x18\x04 \x01(\bR\n" +
 	"activeOnly\x12\x12\n" +
-	"\x04page\x18\x04 \x01(\x05R\x04page\x12\x14\n" +
-	"\x05limit\x18\x05 \x01(\x05R\x05limit\x12\x17\n" +
-	"\asort_by\x18\x06 \x01(\tR\x06sortBy\x12\x1d\n" +
+	"\x04page\x18\x05 \x01(\x05R\x04page\x12\x14\n" +
+	"\x05limit\x18\x06 \x01(\x05R\x05limit\x12\x17\n" +
+	"\asort_by\x18\a \x01(\tR\x06sortBy\x12\x1d\n" +
 	"\n" +
-	"sort_order\x18\a \x01(\tR\tsortOrder\"\xad\x01\n" +
+	"sort_order\x18\b \x01(\tR\tsortOrder\"\xad\x01\n" +
 	"\x15ListCustomersResponse\x123\n" +
 	"\tcustomers\x18\x01 \x03(\v2\x15.customer.v1.CustomerR\tcustomers\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x05R\x05total\x12\x12\n" +
 	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x14\n" +
 	"\x05limit\x18\x04 \x01(\x05R\x05limit\x12\x1f\n" +
 	"\vtotal_pages\x18\x05 \x01(\x05R\n" +
-	"totalPages\"\x99\x01\n" +
-	"\x12GetCustomerRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12)\n" +
-	"\x10include_vehicles\x18\x02 \x01(\bR\x0fincludeVehicles\x12#\n" +
-	"\rinclude_notes\x18\x03 \x01(\bR\fincludeNotes\x12#\n" +
-	"\rinclude_stats\x18\x04 \x01(\bR\fincludeStats\"H\n" +
+	"totalPages\"\xb6\x01\n" +
+	"\x12GetCustomerRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12\x0e\n" +
+	"\x02id\x18\x02 \x01(\tR\x02id\x12)\n" +
+	"\x10include_vehicles\x18\x03 \x01(\bR\x0fincludeVehicles\x12#\n" +
+	"\rinclude_notes\x18\x04 \x01(\bR\fincludeNotes\x12#\n" +
+	"\rinclude_stats\x18\x05 \x01(\bR\fincludeStats\"H\n" +
 	"\x13GetCustomerResponse\x121\n" +
-	"\bcustomer\x18\x01 \x01(\v2\x15.customer.v1.CustomerR\bcustomer\"\xc0\x03\n" +
-	"\x15CreateCustomerRequest\x12\x1d\n" +
-	"\n" +
-	"first_name\x18\x01 \x01(\tR\tfirstName\x12\x1b\n" +
-	"\tlast_name\x18\x02 \x01(\tR\blastName\x12\x14\n" +
-	"\x05email\x18\x03 \x01(\tR\x05email\x12\x14\n" +
-	"\x05phone\x18\x04 \x01(\tR\x05phone\x12#\n" +
-	"\rcustomer_type\x18\x05 \x01(\tR\fcustomerType\x12!\n" +
-	"\fcompany_name\x18\x06 \x01(\tR\vcompanyName\x12\x15\n" +
-	"\x06tax_id\x18\a \x01(\tR\x05taxId\x12\x18\n" +
-	"\aaddress\x18\b \x01(\tR\aaddress\x126\n" +
-	"\bbirthday\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\bbirthday\x12\x14\n" +
-	"\x05notes\x18\n" +
-	" \x01(\tR\x05notes\x129\n" +
-	"\vpreferences\x18\v \x01(\v2\x17.google.protobuf.StructR\vpreferences\x12=\n" +
-	"\bvehicles\x18\f \x03(\v2!.customer.v1.CreateVehicleRequestR\bvehicles\"K\n" +
-	"\x16CreateCustomerResponse\x121\n" +
-	"\bcustomer\x18\x01 \x01(\v2\x15.customer.v1.CustomerR\bcustomer\"\xae\x03\n" +
-	"\x15UpdateCustomerRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
+	"\bcustomer\x18\x01 \x01(\v2\x15.customer.v1.CustomerR\bcustomer\"\xdd\x03\n" +
+	"\x15CreateCustomerRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12\x1d\n" +
 	"\n" +
 	"first_name\x18\x02 \x01(\tR\tfirstName\x12\x1b\n" +
 	"\tlast_name\x18\x03 \x01(\tR\blastName\x12\x14\n" +
@@ -2484,12 +2517,32 @@ const file_proto_customer_customer_proto_rawDesc = "" +
 	"\bbirthday\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampR\bbirthday\x12\x14\n" +
 	"\x05notes\x18\v \x01(\tR\x05notes\x129\n" +
-	"\vpreferences\x18\f \x01(\v2\x17.google.protobuf.StructR\vpreferences\x12\x1b\n" +
-	"\tis_active\x18\r \x01(\bR\bisActive\"K\n" +
+	"\vpreferences\x18\f \x01(\v2\x17.google.protobuf.StructR\vpreferences\x12=\n" +
+	"\bvehicles\x18\r \x03(\v2!.customer.v1.CreateVehicleRequestR\bvehicles\"K\n" +
+	"\x16CreateCustomerResponse\x121\n" +
+	"\bcustomer\x18\x01 \x01(\v2\x15.customer.v1.CustomerR\bcustomer\"\xcb\x03\n" +
+	"\x15UpdateCustomerRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12\x0e\n" +
+	"\x02id\x18\x02 \x01(\tR\x02id\x12\x1d\n" +
+	"\n" +
+	"first_name\x18\x03 \x01(\tR\tfirstName\x12\x1b\n" +
+	"\tlast_name\x18\x04 \x01(\tR\blastName\x12\x14\n" +
+	"\x05email\x18\x05 \x01(\tR\x05email\x12\x14\n" +
+	"\x05phone\x18\x06 \x01(\tR\x05phone\x12#\n" +
+	"\rcustomer_type\x18\a \x01(\tR\fcustomerType\x12!\n" +
+	"\fcompany_name\x18\b \x01(\tR\vcompanyName\x12\x15\n" +
+	"\x06tax_id\x18\t \x01(\tR\x05taxId\x12\x18\n" +
+	"\aaddress\x18\n" +
+	" \x01(\tR\aaddress\x126\n" +
+	"\bbirthday\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\bbirthday\x12\x14\n" +
+	"\x05notes\x18\f \x01(\tR\x05notes\x129\n" +
+	"\vpreferences\x18\r \x01(\v2\x17.google.protobuf.StructR\vpreferences\x12\x1b\n" +
+	"\tis_active\x18\x0e \x01(\bR\bisActive\"K\n" +
 	"\x16UpdateCustomerResponse\x121\n" +
-	"\bcustomer\x18\x01 \x01(\v2\x15.customer.v1.CustomerR\bcustomer\"'\n" +
-	"\x15DeleteCustomerRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"2\n" +
+	"\bcustomer\x18\x01 \x01(\v2\x15.customer.v1.CustomerR\bcustomer\"D\n" +
+	"\x15DeleteCustomerRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12\x0e\n" +
+	"\x02id\x18\x02 \x01(\tR\x02id\"2\n" +
 	"\x16DeleteCustomerResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x99\x01\n" +
 	"\x13ListVehiclesRequest\x12\x1f\n" +
@@ -2540,11 +2593,12 @@ const file_proto_customer_customer_proto_rawDesc = "" +
 	"\x14DeleteVehicleRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"1\n" +
 	"\x15DeleteVehicleResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"i\n" +
-	"\x16SearchCustomersRequest\x12\x14\n" +
-	"\x05query\x18\x01 \x01(\tR\x05query\x12#\n" +
-	"\rsearch_fields\x18\x02 \x01(\tR\fsearchFields\x12\x14\n" +
-	"\x05limit\x18\x03 \x01(\x05R\x05limit\"d\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x86\x01\n" +
+	"\x16SearchCustomersRequest\x12\x1b\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12\x14\n" +
+	"\x05query\x18\x02 \x01(\tR\x05query\x12#\n" +
+	"\rsearch_fields\x18\x03 \x01(\tR\fsearchFields\x12\x14\n" +
+	"\x05limit\x18\x04 \x01(\x05R\x05limit\"d\n" +
 	"\x17SearchCustomersResponse\x123\n" +
 	"\tcustomers\x18\x01 \x03(\v2\x15.customer.v1.CustomerR\tcustomers\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x05R\x05total\"\xe8\x01\n" +
@@ -2593,19 +2647,19 @@ const file_proto_customer_customer_proto_rawDesc = "" +
 	"\x0fAddCustomerNote\x12#.customer.v1.AddCustomerNoteRequest\x1a$.customer.v1.AddCustomerNoteResponseBKZIgithub.com/encomos/api-encomos/customer-service/proto/customer;customerpbb\x06proto3"
 
 var (
-	file_proto_customer_customer_proto_rawDescOnce sync.Once
-	file_proto_customer_customer_proto_rawDescData []byte
+	file_customer_customer_proto_rawDescOnce sync.Once
+	file_customer_customer_proto_rawDescData []byte
 )
 
-func file_proto_customer_customer_proto_rawDescGZIP() []byte {
-	file_proto_customer_customer_proto_rawDescOnce.Do(func() {
-		file_proto_customer_customer_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_customer_customer_proto_rawDesc), len(file_proto_customer_customer_proto_rawDesc)))
+func file_customer_customer_proto_rawDescGZIP() []byte {
+	file_customer_customer_proto_rawDescOnce.Do(func() {
+		file_customer_customer_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_customer_customer_proto_rawDesc), len(file_customer_customer_proto_rawDesc)))
 	})
-	return file_proto_customer_customer_proto_rawDescData
+	return file_customer_customer_proto_rawDescData
 }
 
-var file_proto_customer_customer_proto_msgTypes = make([]protoimpl.MessageInfo, 31)
-var file_proto_customer_customer_proto_goTypes = []any{
+var file_customer_customer_proto_msgTypes = make([]protoimpl.MessageInfo, 31)
+var file_customer_customer_proto_goTypes = []any{
 	(*Customer)(nil),                   // 0: customer.v1.Customer
 	(*Vehicle)(nil),                    // 1: customer.v1.Vehicle
 	(*CustomerNote)(nil),               // 2: customer.v1.CustomerNote
@@ -2640,7 +2694,7 @@ var file_proto_customer_customer_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil),      // 31: google.protobuf.Timestamp
 	(*structpb.Struct)(nil),            // 32: google.protobuf.Struct
 }
-var file_proto_customer_customer_proto_depIdxs = []int32{
+var file_customer_customer_proto_depIdxs = []int32{
 	31, // 0: customer.v1.Customer.birthday:type_name -> google.protobuf.Timestamp
 	32, // 1: customer.v1.Customer.preferences:type_name -> google.protobuf.Struct
 	1,  // 2: customer.v1.Customer.vehicles:type_name -> customer.v1.Vehicle
@@ -2708,26 +2762,26 @@ var file_proto_customer_customer_proto_depIdxs = []int32{
 	0,  // [0:34] is the sub-list for field type_name
 }
 
-func init() { file_proto_customer_customer_proto_init() }
-func file_proto_customer_customer_proto_init() {
-	if File_proto_customer_customer_proto != nil {
+func init() { file_customer_customer_proto_init() }
+func file_customer_customer_proto_init() {
+	if File_customer_customer_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_customer_customer_proto_rawDesc), len(file_proto_customer_customer_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_customer_customer_proto_rawDesc), len(file_customer_customer_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   31,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_proto_customer_customer_proto_goTypes,
-		DependencyIndexes: file_proto_customer_customer_proto_depIdxs,
-		MessageInfos:      file_proto_customer_customer_proto_msgTypes,
+		GoTypes:           file_customer_customer_proto_goTypes,
+		DependencyIndexes: file_customer_customer_proto_depIdxs,
+		MessageInfos:      file_customer_customer_proto_msgTypes,
 	}.Build()
-	File_proto_customer_customer_proto = out.File
-	file_proto_customer_customer_proto_goTypes = nil
-	file_proto_customer_customer_proto_depIdxs = nil
+	File_customer_customer_proto = out.File
+	file_customer_customer_proto_goTypes = nil
+	file_customer_customer_proto_depIdxs = nil
 }
